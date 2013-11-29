@@ -5,27 +5,25 @@ import teams.ucmTeam.TeamManager;
 
 public final class SalamiTeamManager extends TeamManager {
 
+	private Behaviour[] behaviours = { new NopBehaviour() };
+
 	@Override
 	public Behaviour[] createBehaviours() {
-		// TODO Auto-generated method stub
-		return null;
+		return behaviours;
 	}
 
 	@Override
-	public Behaviour getDefaultBehaviour(int arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public Behaviour getDefaultBehaviour(int id) {
+		return behaviours[0];
 	}
 
 	@Override
 	public int onConfigure() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	protected void onTakeStep() {
-		// TODO Auto-generated method stub
 
 	}
 
