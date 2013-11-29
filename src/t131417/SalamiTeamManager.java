@@ -1,11 +1,14 @@
 package t131417;
 
+import teams.rolebased.WorldAPI;
 import teams.ucmTeam.Behaviour;
 import teams.ucmTeam.TeamManager;
+import teams.ucmTeam.UCMPlayer;
 
 public final class SalamiTeamManager extends TeamManager {
 
-	private Behaviour[] behaviours = { new NopBehaviour() };
+	private Behaviour[] behaviours = { new NopBehaviour(),
+			new GoalKeeperBehaviour() };
 
 	@Override
 	public Behaviour[] createBehaviours() {
@@ -14,17 +17,22 @@ public final class SalamiTeamManager extends TeamManager {
 
 	@Override
 	public Behaviour getDefaultBehaviour(int id) {
-		return behaviours[0];
+		switch (id) {
+		case 0:
+			return behaviours[1];
+
+		default:
+			return behaviours[0];
+		}
 	}
 
 	@Override
 	public int onConfigure() {
-		return 0;
+		return WorldAPI.ROBOT_OK;
 	}
 
 	@Override
 	protected void onTakeStep() {
-
 	}
 
 }
