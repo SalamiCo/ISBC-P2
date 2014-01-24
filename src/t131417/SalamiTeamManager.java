@@ -1,7 +1,6 @@
 package t131417;
 
-import java.util.concurrent.TimeUnit;
-
+import t131417.behaviours.DefenseBehaviour;
 import t131417.behaviours.DriverBehaviour;
 import t131417.behaviours.GoalKeeperBehaviour;
 import t131417.behaviours.NopBehaviour;
@@ -33,6 +32,8 @@ public final class SalamiTeamManager extends TeamManager {
         designateDriver();
 
         designateGoalkeeper();
+        
+        designateDefense();
     }
 
     private void designateDriver () {
@@ -42,7 +43,7 @@ public final class SalamiTeamManager extends TeamManager {
         for (UCMPlayer player : _players) {
             Behaviour behaviour = player.getBehaviour();
 
-            // If there's a goalkeeper, end
+            // If there's driver, end
             if (behaviour instanceof DriverBehaviour) {
                 return;
             }
@@ -78,6 +79,29 @@ public final class SalamiTeamManager extends TeamManager {
 
         if (closest != null) {
             closest.setBehaviour(new GoalKeeperBehaviour());
+        }
+    }
+    
+    private void designateDefense () {
+        UCMPlayer closest = null;
+        double distance = 0;
+
+        for (UCMPlayer player : _players) {
+            Behaviour behaviour = player.getBehaviour();
+
+            // If there's a defense, end
+            if (behaviour instanceof DefenseBehaviour) {
+                return;
+            }
+
+            double dtob = player.getRobotAPI().getOurGoal().r;
+            if (!(behaviour instanceof UnblockBehaviour) && !(behaviour instanceof GoalKeeperBehaviour) && (closest == null || dtob < distance)) {
+                closest = player;
+            }
+        }
+
+        if (closest != null) {
+            closest.setBehaviour(new DefenseBehaviour());
         }
     }
     
