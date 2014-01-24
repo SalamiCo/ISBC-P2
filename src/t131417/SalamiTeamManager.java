@@ -1,5 +1,11 @@
 package t131417;
 
+import java.util.concurrent.TimeUnit;
+
+import t131417.behaviours.DriverBehaviour;
+import t131417.behaviours.GoalKeeperBehaviour;
+import t131417.behaviours.NopBehaviour;
+import t131417.behaviours.UnblockBehaviour;
 import teams.rolebased.WorldAPI;
 import teams.ucmTeam.Behaviour;
 import teams.ucmTeam.TeamManager;
@@ -7,32 +13,74 @@ import teams.ucmTeam.UCMPlayer;
 
 public final class SalamiTeamManager extends TeamManager {
 
-	private Behaviour[] behaviours = { new NopBehaviour(),
-			new GoalKeeperBehaviour() };
+    @Override
+    public Behaviour[] createBehaviours () {
+        return new Behaviour[0];
+    }
 
-	@Override
-	public Behaviour[] createBehaviours() {
-		return behaviours;
-	}
+    @Override
+    public Behaviour getDefaultBehaviour (int id) {
+        return new NopBehaviour();
+    }
 
-	@Override
-	public Behaviour getDefaultBehaviour(int id) {
-		switch (id) {
-		case 0:
-			return behaviours[1];
+    @Override
+    public int onConfigure () {
+        return WorldAPI.ROBOT_OK;
+    }
 
-		default:
-			return behaviours[0];
-		}
-	}
+    @Override
+    protected void onTakeStep () {
+        designateDriver();
 
-	@Override
-	public int onConfigure() {
-		return WorldAPI.ROBOT_OK;
-	}
+        designateGoalkeeper();
+    }
 
-	@Override
-	protected void onTakeStep() {
-	}
+    private void designateDriver () {
+        UCMPlayer closest = null;
+        double distance = 0;
+
+        for (UCMPlayer player : _players) {
+            Behaviour behaviour = player.getBehaviour();
+
+            // If there's a goalkeeper, end
+            if (behaviour instanceof DriverBehaviour) {
+                return;
+            }
+
+            double dtob = player.getRobotAPI().getBall().r;
+            if (!(behaviour instanceof UnblockBehaviour) && !(behaviour instanceof GoalKeeperBehaviour) && (closest == null || dtob < distance)) {
+                closest = player;
+            }
+        }
+
+        if (closest != null) {
+            closest.setBehaviour(new DriverBehaviour());
+        }
+    }
+
+    private void designateGoalkeeper () {
+        UCMPlayer closest = null;
+        double distance = 0;
+
+        for (UCMPlayer player : _players) {
+            Behaviour behaviour = player.getBehaviour();
+
+            // If there's a goalkeeper, end
+            if (behaviour instanceof GoalKeeperBehaviour) {
+                return;
+            }
+
+            double dtog = player.getRobotAPI().getOurGoal().r;
+            if (!(behaviour instanceof UnblockBehaviour) && (closest == null || dtog < distance)) {
+                closest = player;
+            }
+        }
+
+        if (closest != null) {
+            closest.setBehaviour(new GoalKeeperBehaviour());
+        }
+    }
+    
+    
 
 }
