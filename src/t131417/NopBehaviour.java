@@ -1,4 +1,4 @@
-package t131417.behaviours;
+package t131417;
 
 import teams.rolebased.WorldAPI;
 import teams.ucmTeam.Behaviour;
@@ -21,6 +21,7 @@ public final class NopBehaviour extends Behaviour {
 	@Override
 	public void onInit(RobotAPI robot) {
 		this.robot = robot;
+		robot.setDisplayString("nop");
 	}
 
 	@Override
@@ -30,7 +31,8 @@ public final class NopBehaviour extends Behaviour {
 
 	@Override
 	public int takeStep() {
-        robot.setDisplayString("NOP");
+		robot.setSpeed(0.0);
+
 		return WorldAPI.ROBOT_OK;
 	}
 
