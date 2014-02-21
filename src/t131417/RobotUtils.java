@@ -10,6 +10,14 @@ import EDU.gatech.cc.is.util.Vec2;
 public final class RobotUtils {
 
     /**
+     * @param robot Robot to check
+     * @return Whether the ball is on the side of that robot
+     */
+    public static boolean ballOnRobotSide (RobotAPI robot) {
+        return (robot.getFieldSide() * robot.toFieldCoordinates(robot.getBall()).x) > 0;
+    }
+
+    /**
      * Sets up the robot to go to the specified position.
      * 
      * @param robot The robot to move
@@ -19,7 +27,7 @@ public final class RobotUtils {
         robot.setSteerHeading(position.t);
 
         double dif = Math.abs(angleDifference(position.t, robot.getSteerHeading()));
-        double spd = Math.max(getSpeed(robot) * 0.95, Math.min(1 - dif / 2, position.r * 8));
+        double spd = Math.max(getSpeed(robot) * 0.95, 1 - dif / 2);
 
         robot.setSpeed(spd);
     }
@@ -68,13 +76,13 @@ public final class RobotUtils {
             Field f1 = RobotAPI.class.getDeclaredField("abstract_robot");
             f1.setAccessible(true);
             SocSmall ss = (SocSmall) f1.get(robot);
-            
+
             Field f2 = SocSmallSim.class.getDeclaredField("speed");
             f2.setAccessible(true);
             Double spd = (Double) f2.get(ss);
-            
+
             return Math.max(spd.doubleValue(), 0.1);
-            
+
         } catch (Exception exc) {
             return 0.1;
         }
