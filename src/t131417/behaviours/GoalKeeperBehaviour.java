@@ -1,6 +1,7 @@
-package t131417;
+package t131417.behaviours;
 
 import EDU.gatech.cc.is.util.Vec2;
+import t131417.RobotUtils;
 import teams.rolebased.WorldAPI;
 import teams.ucmTeam.Behaviour;
 import teams.ucmTeam.RobotAPI;

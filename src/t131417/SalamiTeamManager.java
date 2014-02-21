@@ -1,5 +1,7 @@
 package t131417;
 
+import t131417.behaviours.GoalKeeperBehaviour;
+import t131417.behaviours.NopBehaviour;
 import teams.rolebased.WorldAPI;
 import teams.ucmTeam.Behaviour;
 import teams.ucmTeam.TeamManager;

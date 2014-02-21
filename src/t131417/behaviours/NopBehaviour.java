@@ -1,4 +1,4 @@
-package t131417;
+package t131417.behaviours;
 
 import teams.rolebased.WorldAPI;
 import teams.ucmTeam.Behaviour;
