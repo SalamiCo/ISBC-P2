@@ -1,40 +1,42 @@
 package t131417;
 
+import t131417.behaviours.DriverBehaviour;
 import t131417.behaviours.GoalKeeperBehaviour;
 import t131417.behaviours.NopBehaviour;
 import teams.rolebased.WorldAPI;
 import teams.ucmTeam.Behaviour;
 import teams.ucmTeam.TeamManager;
-import teams.ucmTeam.UCMPlayer;
 
 public final class SalamiTeamManager extends TeamManager {
 
-	private Behaviour[] behaviours = { new NopBehaviour(),
-			new GoalKeeperBehaviour() };
+    private Behaviour[] behaviours = { new NopBehaviour(), new GoalKeeperBehaviour(), new DriverBehaviour() };
 
-	@Override
-	public Behaviour[] createBehaviours() {
-		return behaviours;
-	}
+    @Override
+    public Behaviour[] createBehaviours () {
+        return behaviours;
+    }
 
-	@Override
-	public Behaviour getDefaultBehaviour(int id) {
-		switch (id) {
-		case 0:
-			return behaviours[1];
+    @Override
+    public Behaviour getDefaultBehaviour (int id) {
+        switch (id) {
+            case 0:
+                return behaviours[1];
+                
+            case 3:
+                return behaviours[2];
 
-		default:
-			return behaviours[0];
-		}
-	}
+            default:
+                return behaviours[0];
+        }
+    }
 
-	@Override
-	public int onConfigure() {
-		return WorldAPI.ROBOT_OK;
-	}
+    @Override
+    public int onConfigure () {
+        return WorldAPI.ROBOT_OK;
+    }
 
-	@Override
-	protected void onTakeStep() {
-	}
+    @Override
+    protected void onTakeStep () {
+    }
 
 }
