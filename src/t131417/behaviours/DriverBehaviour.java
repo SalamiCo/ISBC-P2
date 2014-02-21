@@ -23,10 +23,7 @@ public final class DriverBehaviour extends Behaviour {
         GET,
 
         /** Drive the ball to the goal */
-        DRIVE,
-
-        /** Kick the ball! */
-        KICK;
+        DRIVE;
     }
 
     private RobotAPI robot;
@@ -71,11 +68,6 @@ public final class DriverBehaviour extends Behaviour {
                 stepDrive();
                 break;
             }
-
-            case KICK: {
-                stepKick();
-                break;
-            }
         }
 
         robot.setDisplayString("DRIVER | " + state);
@@ -83,6 +75,10 @@ public final class DriverBehaviour extends Behaviour {
     }
 
     private void stepWait () {
+        Vec2 pos = new Vec2(robot.getFieldSide() * robot.getPlayerRadius() * 3, 0);
+        pos = robot.toEgocentricalCoordinates(pos);
+        RobotUtils.moveEgo(robot, pos);
+
         // If ball in opponent's team, stop waiting
         if (!RobotUtils.ballOnRobotSide(robot)) {
             state = State.GET;
@@ -91,9 +87,16 @@ public final class DriverBehaviour extends Behaviour {
 
     private void stepGet () {
         // Go get the ball
-        RobotUtils.moveEgo(robot, robot.getBall());
+        Vec2 ball = robot.getBall();
+        Vec2 goal = robot.getOpponentsGoal();
+        
+        ball.sub(goal);
+        ball.setr(ball.r + robot.getPlayerRadius());
+        ball.add(goal);
+        
+        RobotUtils.moveEgo(robot, ball, 1.0);
 
-        // If ball in our team, wait
+        // If ball in our team, waits
         if (RobotUtils.ballOnRobotSide(robot)) {
             state = State.WAIT;
         }
@@ -105,6 +108,11 @@ public final class DriverBehaviour extends Behaviour {
     }
 
     private void stepDrive () {
+        if (robot.alignedToBallandGoal()) {
+            robot.kick();
+            state = State.GET;
+        }
+        
         // If ball in our team, wait
         if (RobotUtils.ballOnRobotSide(robot)) {
             state = State.WAIT;
@@ -116,13 +124,4 @@ public final class DriverBehaviour extends Behaviour {
         }
     }
 
-    private void stepKick () {
-        Vec2 ball = robot.getBall();
-        Vec2 absBall = robot.toFieldCoordinates(robot.getBall());
-
-        // If ball in our team, wait
-        if (RobotUtils.ballOnRobotSide(robot)) {
-            state = State.WAIT;
-        }
-    }
 }

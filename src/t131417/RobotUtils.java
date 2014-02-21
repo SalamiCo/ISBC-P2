@@ -17,6 +17,8 @@ public final class RobotUtils {
         return (robot.getFieldSide() * robot.toFieldCoordinates(robot.getBall()).x) > 0;
     }
 
+
+
     /**
      * Sets up the robot to go to the specified position.
      * 
@@ -24,11 +26,22 @@ public final class RobotUtils {
      * @param position Position to move to (egocentrical)
      */
     public static void moveEgo (RobotAPI robot, Vec2 position) {
+        moveEgo(robot, position, 0.0);
+    }
+    
+    /**
+     * Sets up the robot to go to the specified position.
+     * 
+     * @param robot The robot to move
+     * @param position Position to move to (egocentrical)
+     * @param inertia Minimum speed
+     */
+    public static void moveEgo (RobotAPI robot, Vec2 position, double inertia) {
         robot.setSteerHeading(position.t);
 
         double dif = Math.abs(angleDifference(position.t, robot.getSteerHeading()));
-        double spd = Math.max(getSpeed(robot) * 0.95, 1 - dif / 2);
-
+        double spd = Math.max(Math.max(inertia, getSpeed(robot)) * 0.95, 2 - dif);
+        
         robot.setSpeed(spd);
     }
 

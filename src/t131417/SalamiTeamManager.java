@@ -10,8 +10,8 @@ import teams.ucmTeam.TeamManager;
 
 public final class SalamiTeamManager extends TeamManager {
 
-    private Behaviour[] behaviours = { new NopBehaviour(), new GoalKeeperBehaviour(), new DefenseBehaviour(),
-        new DriverBehaviour() };
+    private Behaviour[] behaviours = { //
+        new NopBehaviour(), new GoalKeeperBehaviour(), new DefenseBehaviour(), new DriverBehaviour() };
 
     @Override
     public Behaviour[] createBehaviours () {
