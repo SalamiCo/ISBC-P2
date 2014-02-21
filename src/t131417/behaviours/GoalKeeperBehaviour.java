@@ -6,6 +6,13 @@ import teams.rolebased.WorldAPI;
 import teams.ucmTeam.Behaviour;
 import teams.ucmTeam.RobotAPI;
 
+/**
+ * A behaviour for a goalkeeper that will try to block the ball from entering the goal.
+ * 
+ * @author Daniel Escoz
+ * @author Pedro Morgado
+ * @author Arturo Pareja
+ */
 public final class GoalKeeperBehaviour extends Behaviour {
 
     /**
@@ -23,7 +30,10 @@ public final class GoalKeeperBehaviour extends Behaviour {
         DEFEND,
 
         /** Find and kick the ball */
-        KICK;
+        KICK,
+        
+        /** If we are being blocked, unblock */
+        UNBLOCK;
     }
 
     private RobotAPI robot;
@@ -63,12 +73,22 @@ public final class GoalKeeperBehaviour extends Behaviour {
                 stepDefend();
                 break;
             }
+            
             case KICK: {
                 stepKick();
                 break;
             }
+            
+            case UNBLOCK: {
+                stepUnblock();
+                break;
+            }
         }
 
+        if (robot.blocked()) {
+            state = State.UNBLOCK;
+        }
+        
         robot.setDisplayString("GKEEP | " + state);
         return WorldAPI.ROBOT_OK;
     }
@@ -110,16 +130,31 @@ public final class GoalKeeperBehaviour extends Behaviour {
 
     private void stepKick () {
         Vec2 ball = robot.getBall();
-        
+
         // Move to kick the ball
         RobotUtils.moveToKickBallAway(robot);
 
         // If the ball is far, change to GOTO
         Vec2 goal = robot.getOurGoal();
         goal.setx(goal.x - robot.getFieldSide() * robot.getPlayerRadius());
-        
+
         Vec2 bg = new Vec2(ball.x - goal.x, ball.y - goal.y);
         if (bg.r > robot.getPlayerRadius() * 7) {
+            state = State.GOTO;
+        }
+    }
+    
+    private void stepUnblock () {
+        Vec2 cm = robot.getClosestMate();
+        Vec2 co = robot.getClosestOpponent();
+        
+        Vec2 blocker = (cm.r < co.r) ? cm : co;
+        
+        Vec2 target = new Vec2(blocker);
+        target.setr(-100);
+        RobotUtils.moveEgo(robot, target);
+        
+        if (!robot.blocked() && blocker.r > robot.getPlayerRadius() * 2.2) {
             state = State.GOTO;
         }
     }
