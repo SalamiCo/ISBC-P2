@@ -86,7 +86,7 @@ public final class GoalKeeperBehaviour extends Behaviour {
         }
 
         if (robot.blocked()) {
-            state = State.UNBLOCK;
+            //state = State.UNBLOCK;
         }
         
         robot.setDisplayString("GKEEP | " + state);
