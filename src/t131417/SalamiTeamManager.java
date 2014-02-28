@@ -5,14 +5,19 @@ import t131417.behaviours.DefenseBehaviour;
 import t131417.behaviours.DriverBehaviour;
 import t131417.behaviours.GoalKeeperBehaviour;
 import t131417.behaviours.NopBehaviour;
+import t131417.comm.PlayersMessage;
 import teams.rolebased.WorldAPI;
 import teams.ucmTeam.Behaviour;
+import teams.ucmTeam.Message;
 import teams.ucmTeam.TeamManager;
 
 public final class SalamiTeamManager extends TeamManager {
 
     private Behaviour[] behaviours = { //
-        new NopBehaviour(), new GoalKeeperBehaviour(), new DefenseBehaviour(), new DriverBehaviour(), new BlockerBehaviour() };
+        new NopBehaviour(), new GoalKeeperBehaviour(), new DefenseBehaviour(), new DefenseBehaviour(), new DriverBehaviour(),
+            new BlockerBehaviour() };
+
+    private boolean changed = true;
 
     @Override
     public Behaviour[] createBehaviours () {
@@ -28,11 +33,14 @@ public final class SalamiTeamManager extends TeamManager {
             case 1:
                 return behaviours[2];
 
-            case 3:
+            case 2:
                 return behaviours[3];
-            
+
+            case 3:
+                return behaviours[4];
+
             case 4:
-            	return behaviours[4];
+                return behaviours[5];
 
             default:
                 return behaviours[0];
@@ -46,6 +54,13 @@ public final class SalamiTeamManager extends TeamManager {
 
     @Override
     protected void onTakeStep () {
+        if (changed) {
+            changed = false;
+
+            PlayersMessage msg = new PlayersMessage(_players);
+            msg.setType(Message.Type.broadcast);
+            sendMessage(msg);
+        }
     }
 
 }

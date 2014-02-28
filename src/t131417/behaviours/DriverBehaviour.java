@@ -69,7 +69,7 @@ public final class DriverBehaviour extends Behaviour {
                 break;
             }
         }
-
+        
         robot.setDisplayString("DRIVER | " + state);
         return WorldAPI.ROBOT_OK;
     }
