@@ -82,8 +82,9 @@ public class BlockerBehaviour extends Behaviour {
 	
 	private void stepBlock () {
 		Vec2 goal = robot.getOpponentsGoal();
-
-       	robot.blockClosest();
+		
+		Vec2 gk = RobotUtils.getOpponentsGoalKeeper(robot);
+		RobotUtils.moveEgo(robot, gk);
        	
        	//Always close to the opponent's area
        	if (goal.r >= robot.getPlayerRadius() * 10) {

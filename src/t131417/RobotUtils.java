@@ -104,4 +104,22 @@ public final class RobotUtils {
     private RobotUtils () {
         throw new AssertionError();
     }
+    
+    public static Vec2 getOpponentsGoalKeeper(RobotAPI robot){
+    	double min_distance = Double.MAX_VALUE;
+    	Vec2 goal = robot.getOpponentsGoal();    	
+    	Vec2[] opponents = robot.getOpponents();
+    	Vec2 opponentGoalKeeper = opponents[0]; //initial value
+    	
+    	for(Vec2 opponent : opponents){
+    		double distance = opponent.distance(goal);
+    		
+    		//get the opponent closest to goal
+    		if ( distance < min_distance ){
+    			opponentGoalKeeper = opponent;
+    			min_distance = distance;
+    		}
+    	}
+    	return opponentGoalKeeper;
+    }
 }
