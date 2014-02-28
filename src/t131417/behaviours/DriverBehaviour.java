@@ -87,7 +87,9 @@ public final class DriverBehaviour extends Behaviour {
         RobotUtils.moveEgo(robot, pos);
 
         // If ball in opponent's team or at our y, stop waiting
-        if (!RobotUtils.ballOnRobotSide(robot) || Math.abs(ball.y) < robot.getPlayerRadius() * 1.5) {
+        if (!RobotUtils.ballOnRobotSide(robot)
+            || (ball.x * robot.getFieldSide() < 0 && Math.abs(ball.y) < robot.getPlayerRadius() * 1.5))
+        {
             state = State.GET;
         }
     }
@@ -104,17 +106,26 @@ public final class DriverBehaviour extends Behaviour {
         RobotUtils.moveEgo(robot, ball, 1.0);
 
         // If ball in our field and not at our y, waits
-        if (RobotUtils.ballOnRobotSide(robot) && Math.abs(ball.y) > robot.getPlayerRadius() * 1.5) {
+        if (RobotUtils.ballOnRobotSide(robot)
+            && (ball.x * robot.getFieldSide() > 0 || Math.abs(ball.y) > robot.getPlayerRadius() * 1.5))
+        {
             state = State.WAIT;
         }
 
         // If I have the ball, drive!
-        if (robot.getBall().r < robot.getPlayerRadius() * 1.1) {
+        if (ball.r < robot.getPlayerRadius() * 1.1) {
             state = State.DRIVE;
         }
     }
 
     private void stepDrive () {
+        Vec2 tgt = robot.getOpponentsGoal();
+        double adif = RobotUtils.angleDifference(robot.getSteerHeading(), tgt.t);
+        if (Math.abs(adif) > 0.1) {
+            tgt.sett(robot.getSteerHeading() - 0.02 * Math.signum(adif));
+        }
+        RobotUtils.moveEgo(robot, tgt, 1.0);
+        
         if (robot.alignedToBallandGoal()) {
             robot.kick();
             state = State.GET;
@@ -125,8 +136,8 @@ public final class DriverBehaviour extends Behaviour {
             state = State.WAIT;
         }
 
-        // If I don't the ball, get it!
-        if (robot.getBall().r > robot.getPlayerRadius() * 1.15) {
+        // If I don't have the ball, get it!
+        if (robot.getBall().r > robot.getPlayerRadius() * 1.5) {
             state = State.GET;
         }
     }
