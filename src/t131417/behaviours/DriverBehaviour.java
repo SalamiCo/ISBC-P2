@@ -69,18 +69,25 @@ public final class DriverBehaviour extends Behaviour {
                 break;
             }
         }
-        
+
         robot.setDisplayString("DRIVER | " + state);
         return WorldAPI.ROBOT_OK;
     }
 
     private void stepWait () {
+        Vec2 ball = robot.getBall();
+
         Vec2 pos = new Vec2(robot.getFieldSide() * robot.getPlayerRadius() * 3, 0);
         pos = robot.toEgocentricalCoordinates(pos);
+
+        if (ball.x * robot.getFieldSide() > 0) {
+            pos.sety(ball.y);
+        }
+
         RobotUtils.moveEgo(robot, pos);
 
-        // If ball in opponent's team, stop waiting
-        if (!RobotUtils.ballOnRobotSide(robot)) {
+        // If ball in opponent's team or at our y, stop waiting
+        if (!RobotUtils.ballOnRobotSide(robot) || Math.abs(ball.y) < robot.getPlayerRadius() * 1.5) {
             state = State.GET;
         }
     }
@@ -89,15 +96,15 @@ public final class DriverBehaviour extends Behaviour {
         // Go get the ball
         Vec2 ball = robot.getBall();
         Vec2 goal = robot.getOpponentsGoal();
-        
+
         ball.sub(goal);
         ball.setr(ball.r + robot.getPlayerRadius());
         ball.add(goal);
-        
+
         RobotUtils.moveEgo(robot, ball, 1.0);
 
-        // If ball in our team, waits
-        if (RobotUtils.ballOnRobotSide(robot)) {
+        // If ball in our field and not at our y, waits
+        if (RobotUtils.ballOnRobotSide(robot) && Math.abs(ball.y) > robot.getPlayerRadius() * 1.5) {
             state = State.WAIT;
         }
 
@@ -112,7 +119,7 @@ public final class DriverBehaviour extends Behaviour {
             robot.kick();
             state = State.GET;
         }
-        
+
         // If ball in our team, wait
         if (RobotUtils.ballOnRobotSide(robot)) {
             state = State.WAIT;
