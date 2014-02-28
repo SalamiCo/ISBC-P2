@@ -72,7 +72,7 @@ public class BlockerBehaviour extends Behaviour {
 	private void stepGoto () {
 		Vec2 goal = robot.getOpponentsGoal();
 
-        if (goal.r >= robot.getPlayerRadius() * 5) {
+        if (goal.r >= robot.getPlayerRadius() * 10) {
             RobotUtils.moveEgo(robot, goal);
 
         } else {
