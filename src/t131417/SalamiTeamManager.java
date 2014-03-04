@@ -1,5 +1,6 @@
 package t131417;
 
+import t131417.behaviours.BackupBehaviour;
 import t131417.behaviours.BlockerBehaviour;
 import t131417.behaviours.DefenseBehaviour;
 import t131417.behaviours.DriverBehaviour;
@@ -12,7 +13,7 @@ import teams.ucmTeam.TeamManager;
 public final class SalamiTeamManager extends TeamManager {
 
     private Behaviour[] behaviours = { //
-        new NopBehaviour(), new GoalKeeperBehaviour(), new DefenseBehaviour(), new NopBehaviour(),
+        new NopBehaviour(), new GoalKeeperBehaviour(), new DefenseBehaviour(), new BackupBehaviour(),
             new DriverBehaviour(), new BlockerBehaviour() };
 
     private final long[] lastBlock = new long[5];
@@ -66,9 +67,20 @@ public final class SalamiTeamManager extends TeamManager {
 
             if (_players[i].getBehaviour() instanceof BackupBehaviour) {
                 backupId = i;
-                
-            } else if (blockedId < 0 && lastBlock[i] - lastUnblock[i] > 1000) {
+
+            } else if (blockedId < 0 && !(_players[i].getBehaviour() instanceof BlockerBehaviour)
+                && lastBlock[i] - lastUnblock[i] > 1000)
+            {
                 blockedId = i;
+            }
+        }
+        
+        if (blockedId > 0 && backupId > 0) {
+            try {
+                _players[backupId].setBehaviour(_players[blockedId].getBehaviour().getClass().newInstance());
+                _players[blockedId].setBehaviour(new BackupBehaviour());
+            } catch (Exception e) {
+                // Gotta catch 'em all!
             }
         }
     }
