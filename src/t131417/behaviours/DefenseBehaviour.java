@@ -73,7 +73,7 @@ public final class DefenseBehaviour extends Behaviour {
         Vec2 goal = robot.getOurGoal();
         goal.setx(goal.x - robot.getFieldSide() * robot.getPlayerRadius());
 
-        if (goal.r >= robot.getPlayerRadius() * 10) {
+        if (goal.r >= robot.getPlayerRadius() * 24) {
             RobotUtils.moveEgo(robot, goal);
 
         } else {
