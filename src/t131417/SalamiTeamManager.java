@@ -12,10 +12,11 @@ import teams.ucmTeam.TeamManager;
 public final class SalamiTeamManager extends TeamManager {
 
     private Behaviour[] behaviours = { //
-        new NopBehaviour(), new GoalKeeperBehaviour(), new DefenseBehaviour(), new NopBehaviour(), new DriverBehaviour(),
-            new BlockerBehaviour() };
+        new NopBehaviour(), new GoalKeeperBehaviour(), new DefenseBehaviour(), new NopBehaviour(),
+            new DriverBehaviour(), new BlockerBehaviour() };
 
-    private boolean changed = true;
+    private final long[] lastBlock = new long[5];
+    private final long[] lastUnblock = new long[5];
 
     @Override
     public Behaviour[] createBehaviours () {
@@ -52,8 +53,23 @@ public final class SalamiTeamManager extends TeamManager {
 
     @Override
     protected void onTakeStep () {
-        if (changed) {
-            changed = false;
+        long now = System.currentTimeMillis();
+
+        int blockedId = -1;
+        int backupId = -1;
+        for (int i = 0; i < 5; i++) {
+            if (_players[i].getRobotAPI().blocked()) {
+                lastBlock[i] = now;
+            } else {
+                lastUnblock[i] = now;
+            }
+
+            if (_players[i].getBehaviour() instanceof BackupBehaviour) {
+                backupId = i;
+                
+            } else if (blockedId < 0 && lastBlock[i] - lastUnblock[i] > 1000) {
+                blockedId = i;
+            }
         }
     }
 
