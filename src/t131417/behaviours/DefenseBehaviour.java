@@ -1,23 +1,12 @@
 package t131417.behaviours;
 
-import java.util.List;
-import java.util.Queue;
-
 import t131417.RobotUtils;
-import t131417.comm.PlayersMessage;
 import teams.rolebased.WorldAPI;
 import teams.ucmTeam.Behaviour;
-import teams.ucmTeam.Message;
 import teams.ucmTeam.RobotAPI;
-import teams.ucmTeam.UCMPlayer;
 import EDU.gatech.cc.is.util.Vec2;
 
 public final class DefenseBehaviour extends Behaviour {
-
-    private static final double FIELD_TOP = 0.7625;
-    private static final double FIELD_BOTTOM = -0.7625;
-
-    private static final double FIELD_HEIGHT = Math.abs(FIELD_TOP - FIELD_BOTTOM);
 
     /**
      * State used internally by this behaviour.
@@ -40,11 +29,6 @@ public final class DefenseBehaviour extends Behaviour {
     private RobotAPI robot;
 
     private State state;
-
-    private double yMin = FIELD_TOP;
-    private double yMax = FIELD_BOTTOM;
-
-    private String msg = "";
 
     @Override
     public void configure () {
@@ -81,21 +65,13 @@ public final class DefenseBehaviour extends Behaviour {
                 break;
         }
 
-        Queue<Message> queue = getPendingMessages();
-        while (!queue.isEmpty()) {
-            processMessage(queue.remove());
-        }
-
-        robot.setDisplayString("DEFENSE | " + state + msg);
+        robot.setDisplayString("DEFENSE | " + state);
         return WorldAPI.ROBOT_OK;
     }
 
     private void stepGoto () {
         Vec2 goal = robot.getOurGoal();
         goal.setx(goal.x - robot.getFieldSide() * robot.getPlayerRadius());
-        goal = robot.toFieldCoordinates(goal);
-        goal.sety((yMin + yMax) / 2);
-        goal = robot.toEgocentricalCoordinates(goal);
 
         if (goal.r >= robot.getPlayerRadius() * 10) {
             RobotUtils.moveEgo(robot, goal);
@@ -119,54 +95,31 @@ public final class DefenseBehaviour extends Behaviour {
         // defvec.sety(defvec.y * 2);
 
         Vec2 defpos = new Vec2(goal.x + defvec.x, goal.y + defvec.y);
-        defpos = robot.toFieldCoordinates(defpos);
-        defpos.sety(Math.min(yMax, Math.max(yMin, defpos.y)));
-        defpos = robot.toEgocentricalCoordinates(defpos);
         RobotUtils.moveEgo(robot, defpos);
 
         // If the ball is close, change to KICK
-        if (RobotUtils.ballOnRobotSide(robot) //
-            && ball.y < yMax + robot.getPlayerRadius() * 3 //
-            && ball.y > yMin - robot.getPlayerRadius() * 3)
-        {
+        if (RobotUtils.ballOnRobotSide(robot)) {
             state = State.KICK;
         }
     }
 
     private void stepKick () {
         // Move to kick the ball
-        RobotUtils.moveToKickBallAway(robot);
+        RobotUtils.driveBall(robot, robot.getOpponentsGoal());
+        
+        if (robot.alignedToBallandGoal()) {
+            robot.kick();
+            state = State.DEFEND;
+        }
+
+        if (robot.blocked()) {
+            state = State.DEFEND;
+        }
 
         // If the ball is far, change to GOTO
-        Vec2 goal = robot.getOurGoal();
-        goal.setx(goal.x - robot.getFieldSide() * robot.getPlayerRadius());
-
         if (!(RobotUtils.ballOnRobotSide(robot))) {
             state = State.GOTO;
         }
     }
 
-    private void processMessage (Message message) {
-        if (message instanceof PlayersMessage) {
-            PlayersMessage pm = (PlayersMessage) message;
-
-            int total = 0;
-            int us = 0;
-
-            for (UCMPlayer player : pm.getPlayers()) {
-                if (player.getRobotAPI().getID() == robot.getID()) {
-                    us = total;
-                }
-
-                if (player.getBehaviour() instanceof DefenseBehaviour) {
-                    total++;
-                }
-            }
-
-            yMin = FIELD_BOTTOM + (FIELD_HEIGHT / total) * us + robot.getPlayerRadius() * 1.2;
-            yMax = yMin + (FIELD_HEIGHT / total) - robot.getPlayerRadius() * 1.2;
-
-            msg = " | " + (us + 1) + "/" + total;
-        }
-    }
 }

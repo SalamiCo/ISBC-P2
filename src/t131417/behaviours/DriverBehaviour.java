@@ -119,12 +119,7 @@ public final class DriverBehaviour extends Behaviour {
     }
 
     private void stepDrive () {
-        Vec2 tgt = robot.getOpponentsGoal();
-        double adif = RobotUtils.angleDifference(robot.getSteerHeading(), tgt.t);
-        if (Math.abs(adif) > 0.1) {
-            tgt.sett(robot.getSteerHeading() - 0.02 * Math.signum(adif));
-        }
-        RobotUtils.moveEgo(robot, tgt, 1.0);
+        RobotUtils.driveBall(robot, robot.getOpponentsGoal());
         
         if (robot.alignedToBallandGoal()) {
             robot.kick();

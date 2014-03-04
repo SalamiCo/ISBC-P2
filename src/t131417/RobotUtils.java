@@ -42,6 +42,10 @@ public final class RobotUtils {
         double dif = Math.abs(angleDifference(position.t, robot.getSteerHeading()));
         double spd = Math.max(Math.max(inertia, getSpeed(robot)) * 0.95, 2 - dif);
         
+        if (inertia < 0) {
+            spd = Math.min(spd, position.r / robot.getPlayerRadius());
+        }
+        
         robot.setSpeed(spd);
     }
 
@@ -121,5 +125,22 @@ public final class RobotUtils {
     		}
     	}
     	return opponentGoalKeeper;
+    }
+
+
+
+    public static void driveBall (RobotAPI robot, Vec2 goal) {
+        if (robot.getBall().r > robot.getPlayerRadius() * 1.05) {
+            Vec2 ball = robot.getBall();
+            
+            Vec2 dif = new Vec2(ball);
+            dif.sub(goal);
+            dif.setr(robot.getPlayerRadius());
+            
+            ball.add(dif);
+            RobotUtils.moveEgo(robot, ball, 1.0);
+        } else {
+            RobotUtils.moveEgo(robot, goal, 1.0);
+        }
     }
 }

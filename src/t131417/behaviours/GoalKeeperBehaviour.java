@@ -119,7 +119,7 @@ public final class GoalKeeperBehaviour extends Behaviour {
         defvec.sety(defvec.y * 2);
 
         Vec2 defpos = new Vec2(goal.x + defvec.x, goal.y + defvec.y);
-        RobotUtils.moveEgo(robot, defpos);
+        RobotUtils.moveEgo(robot, defpos, -1);
 
         // If the ball is close, change to KICK
         Vec2 bg = new Vec2(ball.x - goal.x, ball.y - goal.y);
