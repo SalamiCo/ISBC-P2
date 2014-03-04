@@ -1,5 +1,6 @@
 package t131417;
 
+import t131417.behaviours.BackupBehaviour;
 import t131417.behaviours.BlockerBehaviour;
 import t131417.behaviours.DefenseBehaviour;
 import t131417.behaviours.DriverBehaviour;
@@ -12,7 +13,7 @@ import teams.ucmTeam.TeamManager;
 public final class SalamiTeamManager extends TeamManager {
 
     private Behaviour[] behaviours = { //
-        new NopBehaviour(), new GoalKeeperBehaviour(), new DefenseBehaviour(), new NopBehaviour(), new DriverBehaviour(),
+        new NopBehaviour(), new GoalKeeperBehaviour(), new DefenseBehaviour(), new BackupBehaviour(), new DriverBehaviour(),
             new BlockerBehaviour() };
 
     private boolean changed = true;
