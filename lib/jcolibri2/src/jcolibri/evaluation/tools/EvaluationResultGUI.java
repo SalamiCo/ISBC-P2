@@ -1,7 +1,7 @@
 /**
  * EvaluationResultGUI.java
  * jCOLIBRI2 framework. 
- * @author Juan A. Recio-García.
+ * @author Juan A. Recio-Garcï¿½a.
  * GAIA - Group for Artificial Intelligence Applications
  * http://gaia.fdi.ucm.es
  * 07/05/2007

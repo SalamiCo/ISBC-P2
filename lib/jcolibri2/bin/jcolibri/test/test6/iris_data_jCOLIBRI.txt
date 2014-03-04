@@ -151,8 +151,3 @@ Case 147,6.3,2.5,5,1.9,Iris-virginica
 Case 148,6.5,3,5.2,2,Iris-virginica
 Case 149,6.2,3.4,5.4,2.3,Iris-virginica
 Case 150,5.9,3,5.1,1.8,Iris-virginica
-case_Tue_Dec_18_10:58:36_CET_2007,5.1,3.5,1.4,0.2,,Iris-setosa
-case_Tue_Dec_18_10:58:54_CET_2007,5.1,3.5,1.4,0.2,,Iris-setosa
-case_Tue_Dec_18_11:24:53_CET_2007,5.1,3.5,1.4,0.2,,Iris-setosa
-case_Tue_Dec_18_11:25:08_CET_2007,5.1,3.5,1.4,0.2,,Iris-setosa
-case_Tue_Dec_18_11:29:41_CET_2007,5.1,3.5,1.4,0.2,,Iris-setosa

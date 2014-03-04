@@ -1,11 +1,10 @@
-*.class
-
 .settings
 
 # Package Files #
-*.jar
-*.war
-*.ear
+**/*.jar
+**/*.war
+**/*.ear
 robocup.dsc
 /robots
 tempFiles/
+**/*.class

@@ -1,5 +1,7 @@
 package t131417;
 
+import t131417.behaviours.NopBehaviour;
+import teams.rolebased.WorldAPI;
 import teams.ucmTeam.Behaviour;
 import teams.ucmTeam.TeamManager;
 
@@ -7,26 +9,22 @@ public final class ChoppedTeamManager extends TeamManager {
 
     @Override
     public Behaviour[] createBehaviours () {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public Behaviour getDefaultBehaviour (int arg0) {
-        // TODO Auto-generated method stub
-        return null;
+        return new NopBehaviour();
     }
 
     @Override
     public int onConfigure () {
-        // TODO Auto-generated method stub
-        return 0;
+        return WorldAPI.ROBOT_OK;
     }
 
     @Override
     protected void onTakeStep () {
-        // TODO Auto-generated method stub
-
+        
     }
 
 }
