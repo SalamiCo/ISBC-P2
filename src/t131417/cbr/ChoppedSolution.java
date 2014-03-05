@@ -35,7 +35,7 @@ public final class ChoppedSolution {
         List<Class<? extends MultiBehaviour>> bs = new ArrayList<Class<? extends MultiBehaviour>>();
 
         @SuppressWarnings("unchecked")
-        Class<? extends MultiBehaviour>[] rands = (Class<? extends MultiBehaviour>[]) new Object[] {//
+        Class<? extends MultiBehaviour>[] rands = (Class<? extends MultiBehaviour>[]) new Class[] {//
             ZombieBehaviour.class, GoalKeeperBehaviour.class, BackupBehaviour.class, BlockerBehaviour.class,
                 DefenseBehaviour.class, DriverBehaviour.class };
         int[] lefts = { 3, 2, 1, 2, 2, 2 };
@@ -55,6 +55,6 @@ public final class ChoppedSolution {
 
         }
 
-        return null;
+        return new ChoppedSolution(bs);
     }
 }

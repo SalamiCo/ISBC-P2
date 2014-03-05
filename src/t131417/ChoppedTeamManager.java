@@ -1,10 +1,12 @@
 package t131417;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import t131417.behaviours.NopBehaviour;
 import t131417.cbr.ChoppedCBR;
 import t131417.cbr.ChoppedCase;
+import t131417.cbr.ChoppedSolution;
 import teams.rolebased.WorldAPI;
 import teams.ucmTeam.Behaviour;
 import teams.ucmTeam.RobotAPI;
@@ -18,7 +20,7 @@ public final class ChoppedTeamManager extends TeamManager {
 
     @Override
     public Behaviour[] createBehaviours () {
-        return null;
+        return new Behaviour[0];
     }
 
     @Override
@@ -43,7 +45,18 @@ public final class ChoppedTeamManager extends TeamManager {
 
     void tick () {
         RobotAPI robot = _players[0].getRobotAPI();
-        ChoppedCase currentCase = new ChoppedCase(robot.getMyScore(), robot.getOpponentScore(), robot.getMatchRemainingTime()));
-        cbr.findSolution(currentCase);
+        ChoppedCase currentCase =
+            new ChoppedCase(robot.getMyScore(), robot.getOpponentScore(), robot.getMatchRemainingTime());
+        ChoppedSolution solution = cbr.findSolution(currentCase);
+
+        List<Class<? extends MultiBehaviour>> behs = solution.getBehaviours();
+        for (int i = 0; i < 5; i++) {
+            try {
+                _players[i].setBehaviour(behs.get(i).newInstance());
+                
+            } catch (Exception exc) {
+                exc.printStackTrace();
+            }
+        }
     }
 }
