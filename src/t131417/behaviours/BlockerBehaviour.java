@@ -27,6 +27,8 @@ public class BlockerBehaviour extends MultiBehaviour {
     private RobotAPI robot;
 
     private State state;
+    
+    private int num;
 
     @Override
     public void configure () {
@@ -95,7 +97,7 @@ public class BlockerBehaviour extends MultiBehaviour {
 
     @Override
     public void multi (int you, int total) {
-        // TODO Setup this to block the nth closest to the opponent's goal
+        this.num = you;
     }
 
 }
