@@ -1,12 +1,12 @@
 package t131417.behaviours;
 
+import t131417.MultiBehaviour;
 import t131417.RobotUtils;
 import teams.rolebased.WorldAPI;
-import teams.ucmTeam.Behaviour;
 import teams.ucmTeam.RobotAPI;
 import EDU.gatech.cc.is.util.Vec2;
 
-public final class DefenseBehaviour extends Behaviour {
+public final class DefenseBehaviour extends MultiBehaviour {
 
     /**
      * State used internally by this behaviour.
@@ -120,6 +120,11 @@ public final class DefenseBehaviour extends Behaviour {
         if (!(RobotUtils.ballOnRobotSide(robot))) {
             state = State.GOTO;
         }
+    }
+
+    @Override
+    public void multi (int you, int total) {
+        // TODO Setup to select part of the field
     }
 
 }

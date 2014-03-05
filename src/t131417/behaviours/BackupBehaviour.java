@@ -1,12 +1,12 @@
 package t131417.behaviours;
 
+import t131417.MultiBehaviour;
 import t131417.RobotUtils;
 import teams.rolebased.WorldAPI;
-import teams.ucmTeam.Behaviour;
 import teams.ucmTeam.RobotAPI;
 import EDU.gatech.cc.is.util.Vec2;
 
-public class BackupBehaviour extends Behaviour {
+public class BackupBehaviour extends MultiBehaviour {
 
     private enum State {
         BACKUP, UNBLOCK;
@@ -88,5 +88,10 @@ public class BackupBehaviour extends Behaviour {
         }
 
         return new Vec2(x, y);
+    }
+
+    @Override
+    public void multi (int you, int total) {
+        // We don't care -- multiple backups don't matter
     }
 }
