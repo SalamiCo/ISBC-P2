@@ -25,12 +25,18 @@ public final class ChoppedCBR implements StandardCBRApplication {
 
     @Override
     public void configure () throws ExecutionException {
-        
+    	try{
+    		connector.initFromXMLfile(jcolibri.util.FileIO.findFile(""));
+    	} catch (Exception e) {
+    		throw new ExecutionException(e);
+    	}
+    	
     }
 
     @Override
     public CBRCaseBase preCycle () throws ExecutionException {
-        return null;
+        baseCase.init(connector);
+        return baseCase;
     }
 
     @Override
@@ -40,7 +46,7 @@ public final class ChoppedCBR implements StandardCBRApplication {
 
     @Override
     public void postCycle () throws ExecutionException {
-
+    	baseCase.close();
     }
 
 }
