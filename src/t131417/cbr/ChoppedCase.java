@@ -40,6 +40,7 @@ public final class ChoppedCase {
         int few = 2, many = 4;
         int goalsUs1 = other.getGoalsUs();
         int goalsThem1 = other.getGoalsThem();
+        long matchTime1 = other.getMatchTime();
 
         int fewGoalsUs = (goalsUs < few && goalsUs1 < few) ? 1 : 0;
         int manyGoalsUs = (goalsUs > many && goalsUs1 > many) ? 1 : 0;
@@ -50,12 +51,15 @@ public final class ChoppedCase {
         int fewDifference = (scoreDifference < few) ? 1 : 0;
         int manyDifference = (scoreDifference > many) ? 1 : 0;
 
-        double weightQuantity = 0.1;
+        double weightQuantity = 0.3;
         double similarQuantity = (fewGoalsUs + manyGoalsUs + fewGoalsThem + manyGoalsThem) * weightQuantity;
 
-        double weightDifference = 0.1;
+        double weightDifference = 0.5;
         double similarDifference = (fewDifference + manyDifference) * weightDifference;
+        
+        double weightTime = 0.2;
+        double similarTime = Math.abs(matchTime - matchTime1) * weightTime;        
 
-        return Double.NaN;
+        return (similarQuantity + similarDifference + similarTime) / 3;
     }
 }
