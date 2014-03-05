@@ -14,7 +14,7 @@ import teams.ucmTeam.TeamManager;
 public final class SalamiTeamManager extends TeamManager {
 
     private Behaviour[] behaviours = { //
-        new NopBehaviour(), new GoalKeeperBehaviour(), new DefenseBehaviour(), new ZombieBehaviour(),
+        new NopBehaviour(), new GoalKeeperBehaviour(), new DefenseBehaviour(), new BackupBehaviour(),
             new DriverBehaviour(), new BlockerBehaviour() };
 
     private final long[] lastBlock = new long[5];
