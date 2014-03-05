@@ -2,11 +2,15 @@ package t131417.cbr;
 
 import jcolibri.casebase.LinealCaseBase;
 import jcolibri.cbraplications.StandardCBRApplication;
+import jcolibri.cbrcore.Attribute;
 import jcolibri.cbrcore.CBRCaseBase;
 import jcolibri.cbrcore.CBRQuery;
 import jcolibri.cbrcore.Connector;
 import jcolibri.connector.DataBaseConnector;
 import jcolibri.exception.ExecutionException;
+import jcolibri.method.retrieve.NNretrieval.NNConfig;
+import jcolibri.method.retrieve.NNretrieval.similarity.global.Average;
+import jcolibri.method.retrieve.NNretrieval.similarity.local.Equal;
 
 /**
  * CBR application to use in the team manager.
@@ -41,7 +45,13 @@ public final class ChoppedCBR implements StandardCBRApplication {
 
     @Override
     public void cycle (CBRQuery query) throws ExecutionException {
-
+    	NNConfig simConfig = new NNConfig();
+    	
+    	//Global similitude function
+    	simConfig.setDescriptionSimFunction(new Average());
+    	
+    	//Local similitude functions
+    	simConfig.addMapping(new Attribute("score", ChoppedDescription.class), new Equal());
     }
 
     @Override

@@ -18,7 +18,15 @@ public final class ChoppedDescription implements CaseComponent {
     /** Goal difference (>0 winning, <0 losing) */
     private int score;
 
-    @Override
+    public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	@Override
     public Attribute getIdAttribute () {
         return new Attribute("id", getClass());
     }
