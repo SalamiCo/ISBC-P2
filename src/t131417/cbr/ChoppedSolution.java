@@ -19,6 +19,10 @@ public final class ChoppedSolution {
     private final List<Class<? extends MultiBehaviour>> behaviours;
 
     public ChoppedSolution (List<Class<? extends MultiBehaviour>> behaviours) {
+        if (behaviours.size() != 5) {
+            throw new IllegalArgumentException("behaviours.size() != 5");
+        }
+
         this.behaviours = Collections.unmodifiableList(new ArrayList<Class<? extends MultiBehaviour>>(behaviours));
     }
 
