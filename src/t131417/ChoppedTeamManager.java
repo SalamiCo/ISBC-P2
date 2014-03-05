@@ -1,6 +1,8 @@
 package t131417;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import t131417.behaviours.NopBehaviour;
@@ -49,14 +51,36 @@ public final class ChoppedTeamManager extends TeamManager {
             new ChoppedCase(robot.getMyScore(), robot.getOpponentScore(), robot.getMatchRemainingTime());
         ChoppedSolution solution = cbr.findSolution(currentCase);
 
+        Map<Class<? extends MultiBehaviour>,Integer> ttimes = new HashMap<Class<? extends MultiBehaviour>,Integer>();
         List<Class<? extends MultiBehaviour>> behs = solution.getBehaviours();
         for (int i = 0; i < 5; i++) {
             try {
-                _players[i].setBehaviour(behs.get(i).newInstance());
-                
+                Class<? extends MultiBehaviour> cls = behs.get(i);
+                _players[i].setBehaviour(cls.newInstance());
+
+                if (ttimes.containsKey(cls)) {
+                    ttimes.put(cls, ttimes.get(cls) + 1);
+                } else {
+                    ttimes.put(cls, 1);
+                }
+
             } catch (Exception exc) {
                 exc.printStackTrace();
             }
+        }
+
+        Map<Class<? extends MultiBehaviour>,Integer> times = new HashMap<Class<? extends MultiBehaviour>,Integer>();
+        for (int i = 0; i < 5; i++) {
+            MultiBehaviour beh = (MultiBehaviour) _players[i].getBehaviour();
+            Class<? extends MultiBehaviour> cls = (Class<? extends MultiBehaviour>) beh.getClass();
+
+            if (times.containsKey(cls)) {
+                times.put(cls, ttimes.get(cls) + 1);
+            } else {
+                times.put(cls, 0);
+            }
+
+            beh.multi(times.get(cls), ttimes.get(cls));
         }
     }
 }

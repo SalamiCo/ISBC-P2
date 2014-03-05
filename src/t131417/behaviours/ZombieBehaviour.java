@@ -1,12 +1,13 @@
 package t131417.behaviours;
 
+import t131417.MultiBehaviour;
 import t131417.RobotUtils;
 import teams.rolebased.WorldAPI;
 import teams.ucmTeam.Behaviour;
 import teams.ucmTeam.RobotAPI;
 import EDU.gatech.cc.is.util.Vec2;
 
-public class ZombieBehaviour extends Behaviour {
+public class ZombieBehaviour extends MultiBehaviour {
 	private enum State {
         ZOMBIE, UNBLOCK;
     }
@@ -75,5 +76,10 @@ public class ZombieBehaviour extends Behaviour {
         double y = RobotAPI.getLowerFieldBound() + (Math.random() * (RobotAPI.getUpperFieldBound() - RobotAPI.getLowerFieldBound()));
         
         return new Vec2(x, y);
+    }
+
+    @Override
+    public void multi (int you, int total) {
+        // Zombies don't care
     }
 }
