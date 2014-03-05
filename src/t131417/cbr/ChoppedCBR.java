@@ -2,11 +2,14 @@ package t131417.cbr;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+
+import t131417.MultiBehaviour;
 
 /**
  * CBR application to use in the team manager.
@@ -40,7 +43,27 @@ public final class ChoppedCBR {
     }
     
     public void save (File file) throws IOException {
-        
+    	PrintWriter pw = new PrintWriter(file);
+    	try {
+        	for(Entry entry : entries){
+        		pw.print(entry.originalCase.getGoalsUs());
+        		pw.print("\t");
+        		pw.print(entry.originalCase.getGoalsThem());
+        		pw.print("\t");
+        		pw.print(entry.originalCase.getMatchTime());
+        		pw.print("\t");
+        		for(Class<? extends MultiBehaviour> cls : entry.solution.getBehaviours()){
+        			pw.print(cls.getName());
+        			pw.print("\t");
+        		}
+        		pw.print(entry.positive);
+        		pw.print("\t");
+        		pw.print(entry.negative);
+        		pw.println();
+        	}
+        } finally {
+        	pw.close();
+        }
     }
 
     private double valorate (Entry entry) {
