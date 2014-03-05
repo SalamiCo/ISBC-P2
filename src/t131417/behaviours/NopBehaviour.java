@@ -1,39 +1,44 @@
 package t131417.behaviours;
 
+import t131417.MultiBehaviour;
 import teams.rolebased.WorldAPI;
-import teams.ucmTeam.Behaviour;
 import teams.ucmTeam.RobotAPI;
 
-public final class NopBehaviour extends Behaviour {
+public final class NopBehaviour extends MultiBehaviour {
 
-	private RobotAPI robot;
+    private RobotAPI robot;
 
-	@Override
-	public void configure() {
+    @Override
+    public void configure () {
 
-	}
+    }
 
-	@Override
-	public void end() {
+    @Override
+    public void end () {
 
-	}
+    }
 
-	@Override
-	public void onInit(RobotAPI robot) {
-		this.robot = robot;
-		robot.setDisplayString("nop");
-	}
+    @Override
+    public void onInit (RobotAPI robot) {
+        this.robot = robot;
+        robot.setDisplayString("nop");
+    }
 
-	@Override
-	public void onRelease(RobotAPI robot) {
-		this.robot = null;
-	}
+    @Override
+    public void onRelease (RobotAPI robot) {
+        this.robot = null;
+    }
 
-	@Override
-	public int takeStep() {
-		robot.setSpeed(0.0);
+    @Override
+    public int takeStep () {
+        robot.setSpeed(0.0);
 
-		return WorldAPI.ROBOT_OK;
-	}
+        return WorldAPI.ROBOT_OK;
+    }
+
+    @Override
+    public void multi (int you, int total) {
+        // NOP's don't care, NOP's don't feel they just sit there judging you
+    }
 
 }
