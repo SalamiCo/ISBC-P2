@@ -44,7 +44,7 @@ public class BackupBehaviour extends Behaviour {
                 Vec2 where = selectWhere();
                 where = robot.toEgocentricalCoordinates(where);
 
-                RobotUtils.moveEgo(robot, where, 1.0);
+                RobotUtils.moveEgo(robot, where, 0.8);
             }
                 break;
 
