@@ -14,6 +14,9 @@ public final class ChoppedDescription implements CaseComponent {
 
     /** Identifier for jColibri */
     private long id;
+    
+    /** Goal difference (>0 winning, <0 losing) */
+    private int score;
 
     @Override
     public Attribute getIdAttribute () {

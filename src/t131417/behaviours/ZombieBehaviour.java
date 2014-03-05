@@ -1,15 +1,14 @@
 package t131417.behaviours;
 
-import t131417.MultiBehaviour;
 import t131417.RobotUtils;
 import teams.rolebased.WorldAPI;
+import teams.ucmTeam.Behaviour;
 import teams.ucmTeam.RobotAPI;
 import EDU.gatech.cc.is.util.Vec2;
 
-public class BackupBehaviour extends MultiBehaviour {
-
-    private enum State {
-        BACKUP, UNBLOCK;
+public class ZombieBehaviour extends Behaviour {
+	private enum State {
+        ZOMBIE, UNBLOCK;
     }
 
     private RobotAPI robot;
@@ -29,7 +28,7 @@ public class BackupBehaviour extends MultiBehaviour {
     @Override
     public void onInit (RobotAPI robot) {
         this.robot = robot;
-        state = State.BACKUP;
+        state = State.ZOMBIE;
     }
 
     @Override
@@ -40,11 +39,11 @@ public class BackupBehaviour extends MultiBehaviour {
     @Override
     public int takeStep () {
         switch (state) {
-            case BACKUP: {
+            case ZOMBIE: {
                 Vec2 where = selectWhere();
                 where = robot.toEgocentricalCoordinates(where);
 
-                RobotUtils.moveEgo(robot, where, 0.8);
+                RobotUtils.moveEgo(robot, where, 1.0);
             }
                 break;
 
@@ -64,34 +63,17 @@ public class BackupBehaviour extends MultiBehaviour {
         } else if (robot.getClosestMate().r > robot.getPlayerRadius() * 1.2
             && robot.getClosestOpponent().r > robot.getPlayerRadius() * 1.2)
         {
-            state = State.BACKUP;
-        }
+            state = State.ZOMBIE;
+       }
 
-        robot.setDisplayString("BACKUP");
+        robot.setDisplayString("ZOMBIE");
         return WorldAPI.ROBOT_OK;
     }
 
     private Vec2 selectWhere () {
-        double x = 0;
-        double y = 0;
-
-        if (RobotUtils.ballOnRobotSide(robot)) {
-            x = RobotAPI.getLeftFieldBound() / 2;
-        } else {
-            x = RobotAPI.getRightFieldBound() / 2;
-        }
-
-        if (robot.getBall().y > 0) {
-            y = RobotAPI.getLowerFieldBound() / 2;
-        } else {
-            y = RobotAPI.getUpperFieldBound() / 2;
-        }
-
+        double x = RobotAPI.getLeftFieldBound() + (Math.random() * (RobotAPI.getRightFieldBound() - RobotAPI.getLeftFieldBound()));
+        double y = RobotAPI.getLowerFieldBound() + (Math.random() * (RobotAPI.getUpperFieldBound() - RobotAPI.getLowerFieldBound()));
+        
         return new Vec2(x, y);
-    }
-
-    @Override
-    public void multi (int you, int total) {
-        // We don't care -- multiple backups don't matter
     }
 }

@@ -1,10 +1,10 @@
 package t131417.behaviours;
 
-import EDU.gatech.cc.is.util.Vec2;
+import t131417.MultiBehaviour;
 import t131417.RobotUtils;
 import teams.rolebased.WorldAPI;
-import teams.ucmTeam.Behaviour;
 import teams.ucmTeam.RobotAPI;
+import EDU.gatech.cc.is.util.Vec2;
 
 /**
  * A behaviour for a goalkeeper that will try to block the ball from entering the goal.
@@ -13,7 +13,7 @@ import teams.ucmTeam.RobotAPI;
  * @author Pedro Morgado
  * @author Arturo Pareja
  */
-public final class GoalKeeperBehaviour extends Behaviour {
+public final class GoalKeeperBehaviour extends MultiBehaviour {
 
     /**
      * State used internally by this behaviour.
@@ -31,7 +31,7 @@ public final class GoalKeeperBehaviour extends Behaviour {
 
         /** Find and kick the ball */
         KICK,
-        
+
         /** If we are being blocked, unblock */
         UNBLOCK;
     }
@@ -73,12 +73,12 @@ public final class GoalKeeperBehaviour extends Behaviour {
                 stepDefend();
                 break;
             }
-            
+
             case KICK: {
                 stepKick();
                 break;
             }
-            
+
             case UNBLOCK: {
                 stepUnblock();
                 break;
@@ -86,9 +86,9 @@ public final class GoalKeeperBehaviour extends Behaviour {
         }
 
         if (robot.blocked()) {
-            //state = State.UNBLOCK;
+            // state = State.UNBLOCK;
         }
-        
+
         robot.setDisplayString("GKEEP | " + state);
         return WorldAPI.ROBOT_OK;
     }
@@ -143,20 +143,25 @@ public final class GoalKeeperBehaviour extends Behaviour {
             state = State.GOTO;
         }
     }
-    
+
     private void stepUnblock () {
         Vec2 cm = robot.getClosestMate();
         Vec2 co = robot.getClosestOpponent();
-        
+
         Vec2 blocker = (cm.r < co.r) ? cm : co;
-        
+
         Vec2 target = new Vec2(blocker);
         target.setr(-100);
         RobotUtils.moveEgo(robot, target);
-        
+
         if (!robot.blocked() && blocker.r > robot.getPlayerRadius() * 2.2) {
             state = State.GOTO;
         }
+    }
+
+    @Override
+    public void multi (int you, int total) {
+        // TODO Setup to use only part of the goal or something like that
     }
 
 }
