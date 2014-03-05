@@ -4,12 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-<<<<<<< HEAD
-import java.io.PrintWriter;
-=======
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.nio.charset.Charset;
->>>>>>> 6fbf7fd65b3d028c72443a3ac8159e9e9490b664
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -42,8 +39,16 @@ public final class ChoppedCBR {
             Entry entry = it.next();
 
             double val = valorate(entry);
+            if (selVal < val) {
+                selSol = entry.solution;
+                selVal = val;
+            }
         }
 
+        if (selSol == null ) {
+            return ChoppedSolution.createRandom();
+        }
+        
         return selSol;
     }
 
