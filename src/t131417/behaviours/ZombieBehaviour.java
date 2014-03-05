@@ -66,7 +66,7 @@ public class ZombieBehaviour extends Behaviour {
             state = State.ZOMBIE;
        }
 
-        robot.setDisplayString("BACKUP");
+        robot.setDisplayString("ZOMBIE");
         return WorldAPI.ROBOT_OK;
     }
 
