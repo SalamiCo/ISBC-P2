@@ -1,5 +1,7 @@
 package t131417.cbr;
 
+import java.util.Collection;
+
 import jcolibri.casebase.LinealCaseBase;
 import jcolibri.cbraplications.StandardCBRApplication;
 import jcolibri.cbrcore.Attribute;
@@ -8,9 +10,12 @@ import jcolibri.cbrcore.CBRQuery;
 import jcolibri.cbrcore.Connector;
 import jcolibri.connector.DataBaseConnector;
 import jcolibri.exception.ExecutionException;
+import jcolibri.method.retrieve.RetrievalResult;
 import jcolibri.method.retrieve.NNretrieval.NNConfig;
+import jcolibri.method.retrieve.NNretrieval.NNScoringMethod;
 import jcolibri.method.retrieve.NNretrieval.similarity.global.Average;
 import jcolibri.method.retrieve.NNretrieval.similarity.local.Equal;
+import jcolibri.method.retrieve.selection.SelectCases;
 
 /**
  * CBR application to use in the team manager.
@@ -52,6 +57,15 @@ public final class ChoppedCBR implements StandardCBRApplication {
     	
     	//Local similitude functions
     	simConfig.addMapping(new Attribute("score", ChoppedDescription.class), new Equal());
+    	
+    	//Change weights
+    	//simConfig.setWeight(new Attribute("score", ChoppedDescription.class), 0.5);
+    	
+    	//Retrieve solutions
+    	Collection<RetrievalResult> eval = NNScoringMethod.evaluateSimilarity(baseCase.getCases(), query, simConfig);
+    	
+    	//Select k best cases
+    	eval = SelectCases.selectTopKRR(eval, 5);
     }
 
     @Override
