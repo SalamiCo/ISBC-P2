@@ -33,14 +33,17 @@ public final class ChoppedCBR implements StandardCBRApplication {
     /** Database connector */
     private final Connector connector = new DataBaseConnector();
 
+    /** Result of the lastround */
+    private ChoppedSolution solution = null;
+
     @Override
     public void configure () throws ExecutionException {
-    	try{
-    		connector.initFromXMLfile(jcolibri.util.FileIO.findFile(""));
-    	} catch (Exception e) {
-    		throw new ExecutionException(e);
-    	}
-    	
+        try {
+            connector.initFromXMLfile(jcolibri.util.FileIO.findFile(""));
+        } catch (Exception e) {
+            throw new ExecutionException(e);
+        }
+
     }
 
     @Override
@@ -51,33 +54,36 @@ public final class ChoppedCBR implements StandardCBRApplication {
 
     @Override
     public void cycle (CBRQuery query) throws ExecutionException {
-    	NNConfig simConfig = new NNConfig();
-    	
-    	//Global similitude function
-    	simConfig.setDescriptionSimFunction(new Average());
-    	
-    	//Local similitude functions
-    	simConfig.addMapping(new Attribute("score", ChoppedDescription.class), new Equal());
-    	
-    	//Change weights
-    	//simConfig.setWeight(new Attribute("score", ChoppedDescription.class), 0.5);
-    	
-    	//Retrieve solutions
-    	Collection<RetrievalResult> eval = NNScoringMethod.evaluateSimilarity(baseCase.getCases(), query, simConfig);
-    	
-    	//Select k best cases
-    	eval = SelectCases.selectTopKRR(eval, 1);
-    	
-    	//Save best case
-    	if (!eval.isEmpty()){    	
-    		jcolibri.method.retain.StoreCasesMethod.storeCase(baseCase, (CBRCase) eval.toArray()[0]);
-    	}
-    	
+        NNConfig simConfig = new NNConfig();
+
+        // Global similitude function
+        simConfig.setDescriptionSimFunction(new Average());
+
+        // Local similitude functions
+        simConfig.addMapping(new Attribute("score", ChoppedDescription.class), new Equal());
+
+        // Change weights
+        // simConfig.setWeight(new Attribute("score", ChoppedDescription.class), 0.5);
+
+        // Retrieve solutions
+        Collection<RetrievalResult> eval = NNScoringMethod.evaluateSimilarity(baseCase.getCases(), query, simConfig);
+
+        // Select k best cases
+        eval = SelectCases.selectTopKRR(eval, 1);
+
+        // Save best case
+        if (eval.isEmpty()) {
+            solution = ChoppedSolution.createRandom();
+        } else {
+            solution = (ChoppedSolution) eval.iterator().next().get_case().getSolution();
+            jcolibri.method.retain.StoreCasesMethod.storeCase(baseCase, (CBRCase) eval.toArray()[0]);
+        }
+
     }
 
     @Override
     public void postCycle () throws ExecutionException {
-    	baseCase.close();
+        baseCase.close();
     }
 
 }

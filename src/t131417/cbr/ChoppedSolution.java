@@ -37,4 +37,7 @@ public final class ChoppedSolution implements CaseComponent {
         this.behaviours = new ArrayList<Class<? extends MultiBehaviour>>(behaviours);
     }
 
+    public static ChoppedSolution createRandom () {
+        return null;
+    }
 }
