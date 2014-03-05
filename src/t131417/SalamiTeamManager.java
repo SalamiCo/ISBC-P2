@@ -6,6 +6,7 @@ import t131417.behaviours.DefenseBehaviour;
 import t131417.behaviours.DriverBehaviour;
 import t131417.behaviours.GoalKeeperBehaviour;
 import t131417.behaviours.NopBehaviour;
+import t131417.behaviours.ZombieBehaviour;
 import teams.rolebased.WorldAPI;
 import teams.ucmTeam.Behaviour;
 import teams.ucmTeam.TeamManager;
@@ -13,7 +14,7 @@ import teams.ucmTeam.TeamManager;
 public final class SalamiTeamManager extends TeamManager {
 
     private Behaviour[] behaviours = { //
-        new NopBehaviour(), new GoalKeeperBehaviour(), new DefenseBehaviour(), new BackupBehaviour(),
+        new NopBehaviour(), new GoalKeeperBehaviour(), new DefenseBehaviour(), new ZombieBehaviour(),
             new DriverBehaviour(), new BlockerBehaviour() };
 
     private final long[] lastBlock = new long[5];
