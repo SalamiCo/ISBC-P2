@@ -64,4 +64,21 @@ public final class ChoppedCBR {
         /* package */long negative;
     }
 
+    private static class ChoppedSimilarityComparator implements Comparator<Entry> {
+
+        private final ChoppedCase ccase;
+
+        /* package */public ChoppedSimilarityComparator (ChoppedCase ccase) {
+            this.ccase = ccase;
+        }
+
+        @Override
+        public int compare (Entry cc1, Entry cc2) {
+            double d1 = ccase.similarity(cc1.originalCase);
+            double d2 = ccase.similarity(cc2.originalCase);
+
+            return d1 < d2 ? -1 : d1 > d2 ? +1 : 0;
+        }
+
+    }
 }

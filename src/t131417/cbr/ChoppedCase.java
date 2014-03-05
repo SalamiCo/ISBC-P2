@@ -24,4 +24,7 @@ public final class ChoppedCase {
         this.goalsThem = goalsThem;
     }
 
+    public double similarity (ChoppedCase other) {
+        return Double.NaN;
+    }
 }
