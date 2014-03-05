@@ -3,6 +3,7 @@ package t131417;
 import java.util.concurrent.TimeUnit;
 
 import t131417.behaviours.NopBehaviour;
+import t131417.cbr.ChoppedCBR;
 import teams.rolebased.WorldAPI;
 import teams.ucmTeam.Behaviour;
 import teams.ucmTeam.TeamManager;
@@ -10,6 +11,8 @@ import teams.ucmTeam.TeamManager;
 public final class ChoppedTeamManager extends TeamManager {
 
     private long lastTick = 0L;
+    
+    private final ChoppedCBR cbr = new ChoppedCBR();
 
     @Override
     public Behaviour[] createBehaviours () {
@@ -29,6 +32,7 @@ public final class ChoppedTeamManager extends TeamManager {
     @Override
     protected void onTakeStep () {
         long now = System.nanoTime();
+        
         if (now - lastTick > TimeUnit.SECONDS.toNanos(10)) {
             tick();
             lastTick = now;

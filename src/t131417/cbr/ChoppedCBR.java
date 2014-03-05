@@ -1,5 +1,7 @@
 package t131417.cbr;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -20,7 +22,7 @@ public final class ChoppedCBR {
     public ChoppedSolution findSolution (ChoppedCase ccase) {
         Collections.sort(entries, new ChoppedSimilarityComparator(ccase));
 
-        ChoppedSolution selSol = ChoppedSolution.createRandom();
+        ChoppedSolution selSol = null;
         double selVal = Double.MIN_VALUE;
 
         int n = 10;
@@ -29,6 +31,16 @@ public final class ChoppedCBR {
 
             double val = valorate(entry);
         }
+        
+        return selSol;
+    }
+
+    public void load (File file) throws IOException {
+        
+    }
+    
+    public void save (File file) throws IOException {
+        
     }
 
     private double valorate (Entry entry) {
@@ -77,7 +89,8 @@ public final class ChoppedCBR {
             double d1 = ccase.similarity(cc1.originalCase);
             double d2 = ccase.similarity(cc2.originalCase);
 
-            return d1 < d2 ? -1 : d1 > d2 ? +1 : 0;
+            return d1 > d2 ? -1 : //
+                d1 < d2 ? +1 : 0;
         }
 
     }
