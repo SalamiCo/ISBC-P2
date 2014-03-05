@@ -5,6 +5,7 @@ import java.util.Collection;
 import jcolibri.casebase.LinealCaseBase;
 import jcolibri.cbraplications.StandardCBRApplication;
 import jcolibri.cbrcore.Attribute;
+import jcolibri.cbrcore.CBRCase;
 import jcolibri.cbrcore.CBRCaseBase;
 import jcolibri.cbrcore.CBRQuery;
 import jcolibri.cbrcore.Connector;
@@ -65,7 +66,13 @@ public final class ChoppedCBR implements StandardCBRApplication {
     	Collection<RetrievalResult> eval = NNScoringMethod.evaluateSimilarity(baseCase.getCases(), query, simConfig);
     	
     	//Select k best cases
-    	eval = SelectCases.selectTopKRR(eval, 5);
+    	eval = SelectCases.selectTopKRR(eval, 1);
+    	
+    	//Save best case
+    	if (!eval.isEmpty()){    	
+    		jcolibri.method.retain.StoreCasesMethod.storeCase(baseCase, (CBRCase) eval.toArray()[0]);
+    	}
+    	
     }
 
     @Override
