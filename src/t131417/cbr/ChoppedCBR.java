@@ -45,10 +45,10 @@ public final class ChoppedCBR {
             }
         }
 
-        if (selSol == null ) {
+        if (selSol == null) {
             return ChoppedSolution.createRandom();
         }
-        
+
         return selSol;
     }
 
@@ -82,39 +82,68 @@ public final class ChoppedCBR {
                 entry.solution = sol;
                 entry.positive = Integer.parseInt(pieces[8]);
                 entry.negative = Integer.parseInt(pieces[9]);
-                
+
                 // Add the entry
                 entries.add(entry);
             }
         } catch (ClassNotFoundException exc) {
             exc.printStackTrace();
-            
+
         } finally {
             in.close();
         }
     }
 
+    public void add (ChoppedCase ccase, ChoppedSolution solution, boolean positive) {
+        Entry e = null;
+
+        // Loop over the entries
+        for (Entry entry : entries) {
+            if (entry.originalCase.equals(ccase) && entry.solution.equals(solution)) {
+                e = entry;
+                break;
+            }
+        }
+
+        // If we didn't find it, add a new one
+        if (e == null) {
+            e = new Entry();
+            e.originalCase = ccase;
+            e.solution = solution;
+            e.positive = 0;
+            e.negative = 0;
+
+            entries.add(e);
+        }
+
+        if (positive) {
+            e.positive++;
+        } else {
+            e.negative++;
+        }
+    }
+
     public void save (File file) throws IOException {
-    	PrintWriter pw = new PrintWriter(file);
-    	try {
-        	for(Entry entry : entries){
-        		pw.print(entry.originalCase.getGoalsUs());
-        		pw.print("\t");
-        		pw.print(entry.originalCase.getGoalsThem());
-        		pw.print("\t");
-        		pw.print(entry.originalCase.getMatchTime());
-        		pw.print("\t");
-        		for(Class<? extends MultiBehaviour> cls : entry.solution.getBehaviours()){
-        			pw.print(cls.getName());
-        			pw.print("\t");
-        		}
-        		pw.print(entry.positive);
-        		pw.print("\t");
-        		pw.print(entry.negative);
-        		pw.println();
-        	}
+        PrintWriter pw = new PrintWriter(file);
+        try {
+            for (Entry entry : entries) {
+                pw.print(entry.originalCase.getGoalsUs());
+                pw.print("\t");
+                pw.print(entry.originalCase.getGoalsThem());
+                pw.print("\t");
+                pw.print(entry.originalCase.getMatchTime());
+                pw.print("\t");
+                for (Class<? extends MultiBehaviour> cls : entry.solution.getBehaviours()) {
+                    pw.print(cls.getName());
+                    pw.print("\t");
+                }
+                pw.print(entry.positive);
+                pw.print("\t");
+                pw.print(entry.negative);
+                pw.println();
+            }
         } finally {
-        	pw.close();
+            pw.close();
         }
     }
 
