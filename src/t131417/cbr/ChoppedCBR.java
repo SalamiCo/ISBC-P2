@@ -1,10 +1,22 @@
 package t131417.cbr;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+<<<<<<< HEAD
+import java.io.PrintWriter;
+=======
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+>>>>>>> 6fbf7fd65b3d028c72443a3ac8159e9e9490b664
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+
+import t131417.MultiBehaviour;
 
 /**
  * CBR application to use in the team manager.
@@ -15,12 +27,14 @@ import java.util.List;
  */
 public final class ChoppedCBR {
 
+    private static final Charset UTF8 = Charset.forName("UTF-8");
+
     private List<Entry> entries = new ArrayList<Entry>();
 
     public ChoppedSolution findSolution (ChoppedCase ccase) {
         Collections.sort(entries, new ChoppedSimilarityComparator(ccase));
 
-        ChoppedSolution selSol = ChoppedSolution.createRandom();
+        ChoppedSolution selSol = null;
         double selVal = Double.MIN_VALUE;
 
         int n = 10;
@@ -28,6 +42,74 @@ public final class ChoppedCBR {
             Entry entry = it.next();
 
             double val = valorate(entry);
+        }
+
+        return selSol;
+    }
+
+    public void clear () {
+        entries.clear();
+    }
+
+    public void load (File file) throws IOException {
+        BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file), UTF8));
+        try {
+            String line;
+            while ((line = in.readLine()) != null) {
+                String[] pieces = line.split("\\s+");
+
+                int gu = Integer.parseInt(pieces[0]);
+                int gt = Integer.parseInt(pieces[1]);
+                int t = Integer.parseInt(pieces[2]);
+                ChoppedCase ocase = new ChoppedCase(gu, gt, t);
+
+                List<Class<? extends MultiBehaviour>> classes = new ArrayList<Class<? extends MultiBehaviour>>();
+                classes.add((Class<? extends MultiBehaviour>) Class.forName(pieces[3]));
+                classes.add((Class<? extends MultiBehaviour>) Class.forName(pieces[4]));
+                classes.add((Class<? extends MultiBehaviour>) Class.forName(pieces[5]));
+                classes.add((Class<? extends MultiBehaviour>) Class.forName(pieces[6]));
+                classes.add((Class<? extends MultiBehaviour>) Class.forName(pieces[7]));
+                ChoppedSolution sol = new ChoppedSolution(classes);
+
+                // Create the entry
+                Entry entry = new Entry();
+                entry.originalCase = ocase;
+                entry.solution = sol;
+                entry.positive = Integer.parseInt(pieces[8]);
+                entry.negative = Integer.parseInt(pieces[9]);
+                
+                // Add the entry
+                entries.add(entry);
+            }
+        } catch (ClassNotFoundException exc) {
+            exc.printStackTrace();
+            
+        } finally {
+            in.close();
+        }
+    }
+
+    public void save (File file) throws IOException {
+    	PrintWriter pw = new PrintWriter(file);
+    	try {
+        	for(Entry entry : entries){
+        		pw.print(entry.originalCase.getGoalsUs());
+        		pw.print("\t");
+        		pw.print(entry.originalCase.getGoalsThem());
+        		pw.print("\t");
+        		pw.print(entry.originalCase.getMatchTime());
+        		pw.print("\t");
+        		for(Class<? extends MultiBehaviour> cls : entry.solution.getBehaviours()){
+        			pw.print(cls.getName());
+        			pw.print("\t");
+        		}
+        		pw.print(entry.positive);
+        		pw.print("\t");
+        		pw.print(entry.negative);
+        		pw.println();
+        	}
+        } finally {
+        	pw.close();
         }
     }
 
@@ -77,7 +159,8 @@ public final class ChoppedCBR {
             double d1 = ccase.similarity(cc1.originalCase);
             double d2 = ccase.similarity(cc2.originalCase);
 
-            return d1 < d2 ? -1 : d1 > d2 ? +1 : 0;
+            return d1 > d2 ? -1 : //
+                d1 < d2 ? +1 : 0;
         }
 
     }

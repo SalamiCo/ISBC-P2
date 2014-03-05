@@ -1,6 +1,5 @@
 package t131417.cbr;
 
-import java.util.Comparator;
 
 /**
  * Description of the cases for the {@link t131417.ChoppedTeam}.
