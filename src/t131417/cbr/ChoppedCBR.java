@@ -39,7 +39,9 @@ public final class ChoppedCBR {
             Entry entry = it.next();
 
             double val = valorate(entry);
-            if (selVal < val) {
+            double sim = entry.originalCase.similarity(ccase);
+            
+            if (val > 0.2 && sim > 0.7 && selVal < val) {
                 selSol = entry.solution;
                 selVal = val;
             }
@@ -99,7 +101,7 @@ public final class ChoppedCBR {
 
         // Loop over the entries
         for (Entry entry : entries) {
-            if (entry.originalCase.similarity(ccase) > 0.9 && entry.solution.equals(solution)) {
+            if (entry.originalCase.similarity(ccase) > 0.95 && entry.solution.equals(solution)) {
                 e = entry;
                 break;
             }
