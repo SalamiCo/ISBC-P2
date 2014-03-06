@@ -22,7 +22,7 @@ import teams.ucmTeam.TeamManager;
 
 public final class ChoppedTeamManager extends TeamManager {
 
-    private static final File CBRFILE = new File("./t131417.cbr");
+    private static final File CBRFILE = new File("./robots/t1314grupo17/cbr");
 
     private long lastTick = 0L;
 
