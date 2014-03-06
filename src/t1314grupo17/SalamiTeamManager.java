@@ -6,7 +6,6 @@ import t1314grupo17.behaviours.DefenseBehaviour;
 import t1314grupo17.behaviours.DriverBehaviour;
 import t1314grupo17.behaviours.GoalKeeperBehaviour;
 import t1314grupo17.behaviours.NopBehaviour;
-import t1314grupo17.behaviours.ZombieBehaviour;
 import teams.rolebased.WorldAPI;
 import teams.ucmTeam.Behaviour;
 import teams.ucmTeam.TeamManager;
