@@ -99,7 +99,7 @@ public final class ChoppedCBR {
 
         // Loop over the entries
         for (Entry entry : entries) {
-            if (entry.originalCase.equals(ccase) && entry.solution.equals(solution)) {
+            if (entry.originalCase.similarity(ccase) > 0.9 && entry.solution.equals(solution)) {
                 e = entry;
                 break;
             }

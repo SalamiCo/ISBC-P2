@@ -1,6 +1,7 @@
 package t131417.cbr;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -56,5 +57,20 @@ public final class ChoppedSolution {
         }
 
         return new ChoppedSolution(bs);
+    }
+
+    @Override
+    public boolean equals (Object obj) {
+        if (!(obj instanceof ChoppedSolution)) {
+            return false;
+        }
+
+        ChoppedSolution cs = (ChoppedSolution) obj;
+        return cs.behaviours.equals(behaviours);
+    }
+
+    @Override
+    public int hashCode () {
+        return Arrays.hashCode(behaviours.toArray());
     }
 }

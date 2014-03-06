@@ -20,13 +20,13 @@ import teams.ucmTeam.TeamManager;
 public final class ChoppedTeamManager extends TeamManager {
 
     private static final File CBRFILE = new File("./t131417.cbr");
-    
+
     private long lastTick = 0L;
 
     private final ChoppedCBR cbr = new ChoppedCBR();
-    
+
     private ChoppedCase lastCase;
-    
+
     private ChoppedSolution lastSolution;
 
     @Override
@@ -42,7 +42,7 @@ public final class ChoppedTeamManager extends TeamManager {
     @Override
     public int onConfigure () {
         URL defaultCbrUrl = ChoppedTeamManager.class.getResource("/default.cbr");
-        
+
         try {
             cbr.load(CBRFILE);
         } catch (IOException e) {
@@ -56,7 +56,7 @@ public final class ChoppedTeamManager extends TeamManager {
         long now = System.nanoTime();
 
         int justScored = _players[0].getRobotAPI().getJustScored();
-        
+
         if (justScored != 0 && lastCase != null) {
             cbr.add(lastCase, lastSolution, justScored > 0);
             try {
@@ -65,7 +65,7 @@ public final class ChoppedTeamManager extends TeamManager {
                 e.printStackTrace();
             }
         }
-        
+
         if (now - lastTick > TimeUnit.SECONDS.toNanos(10) || justScored != 0) {
             tick();
             lastTick = now;
@@ -75,7 +75,7 @@ public final class ChoppedTeamManager extends TeamManager {
     void tick () {
         RobotAPI robot = _players[0].getRobotAPI();
         ChoppedCase currentCase =
-            new ChoppedCase(robot.getMyScore(), robot.getOpponentScore(), robot.getMatchRemainingTime()/1000);
+            new ChoppedCase(robot.getMyScore(), robot.getOpponentScore(), robot.getMatchRemainingTime() / 1000);
         ChoppedSolution solution = cbr.findSolution(currentCase);
 
         Map<Class<? extends MultiBehaviour>,Integer> ttimes = new HashMap<Class<? extends MultiBehaviour>,Integer>();
@@ -109,7 +109,7 @@ public final class ChoppedTeamManager extends TeamManager {
 
             beh.multi(times.get(cls), ttimes.get(cls));
         }
-        
+
         lastCase = currentCase;
         lastSolution = solution;
     }
