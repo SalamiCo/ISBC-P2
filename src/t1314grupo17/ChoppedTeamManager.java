@@ -47,6 +47,7 @@ public final class ChoppedTeamManager extends TeamManager {
         URL defaultCbrUrl = ChoppedTeamManager.class.getResource("/default.cbr");
 
         try {
+            CBRFILE.getParentFile().mkdirs();
             cbr.load(CBRFILE);
         } catch (IOException e) {
             e.printStackTrace();
