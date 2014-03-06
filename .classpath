@@ -14,6 +14,5 @@
 	<classpathentry kind="lib" path="lib/ucmteam.jar"/>
 	<classpathentry kind="lib" path="lib/rolebasedteam.jar"/>
 	<classpathentry kind="lib" path="lib/jcolibri2.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/jCOLIBRI2"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

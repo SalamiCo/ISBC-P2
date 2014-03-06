@@ -73,4 +73,9 @@ public final class ChoppedSolution {
     public int hashCode () {
         return Arrays.hashCode(behaviours.toArray());
     }
+
+    @Override
+    public String toString () {
+        return behaviours.toString();
+    }
 }

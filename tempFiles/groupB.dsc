@@ -1,4 +1,4 @@
-TupiTeam2 t070801.TupiTeam2
-TiquiTaca t070802.TiquiTaca
+MilanCBR t070808.MilanCB
+Clasicos t070807.Clasicos
 TiquiCasos t070802.TiquiCasos
 OurTeam t070805.OurTeam

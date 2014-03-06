@@ -37,20 +37,22 @@ public final class ChoppedCBR {
         int n = 10;
         for (Iterator<Entry> it = entries.iterator(); n > 0 && it.hasNext(); n--) {
             Entry entry = it.next();
-
             double val = valorate(entry);
-            double sim = entry.originalCase.similarity(ccase);
+
+            System.out.println("sim: " + entry.originalCase.similarity(ccase) + " -- val: " + val);
             
-            if (val > 0.2 && sim > 0.7 && selVal < val) {
+            if (selVal < val) {
                 selSol = entry.solution;
                 selVal = val;
             }
         }
 
         if (selSol == null) {
+            System.out.println(ccase + " $ RANDOM");
             return ChoppedSolution.createRandom();
         }
 
+        System.out.println(ccase + " % " + selVal);
         return selSol;
     }
 
@@ -101,7 +103,7 @@ public final class ChoppedCBR {
 
         // Loop over the entries
         for (Entry entry : entries) {
-            if (entry.originalCase.similarity(ccase) > 0.95 && entry.solution.equals(solution)) {
+            if (entry.originalCase.similarity(ccase) > 0.9 && entry.solution.equals(solution)) {
                 e = entry;
                 break;
             }
@@ -160,7 +162,7 @@ public final class ChoppedCBR {
         // Magic algorithm for +/- votes valoration found here:
         // http://www.evanmiller.org/how-not-to-sort-by-average-rating.html
         // Used in Reddit for comments so it must be good!
-        double z = 1.9599639715843482; // pre-calculated for 0.95 confidence
+        double z = 1.644853646608357; // pre-calculated for 0.90 confidence
         double phat = 1.0 * pos / n;
         return (phat + z * z / (2 * n) - z * Math.sqrt((phat * (1 - phat) + z * z / (4 * n)) / n)) / (1 + z * z / n);
     }
