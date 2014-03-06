@@ -128,8 +128,15 @@ public final class DefenseBehaviour extends MultiBehaviour {
 
     @Override
     public void multi (int you, int total) {
-        min = (((RobotAPI.getUpperFieldBound() - RobotAPI.getLowerFieldBound()) / total) * you) + RobotAPI.getLowerFieldBound();
-        max = (((RobotAPI.getUpperFieldBound() - RobotAPI.getLowerFieldBound()) / total) * (you + 1)) + RobotAPI.getLowerFieldBound();
+    	final double aTop = RobotAPI.getUpperFieldBound();
+    	final double aBottom = RobotAPI.getLowerFieldBound();
+        //Setup to use only part of the goal or something like that
+    	//total 0 < x <= 2
+    	double areaHeight = aTop-aBottom;
+    	double barHeight =  areaHeight / total;
+    	
+    	min = aBottom + barHeight * you;
+    	max = aBottom + barHeight * (you + 1);
     }
 
 }
