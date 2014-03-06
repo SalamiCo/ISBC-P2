@@ -98,7 +98,7 @@ public final class DefenseBehaviour extends MultiBehaviour {
         // defvec.sety(defvec.y * 2);
 
         Vec2 defpos = new Vec2(goal.x + defvec.x, goal.y + defvec.y);
-        RobotUtils.restrictMovementY(defpos, min, max);
+        RobotUtils.restrictMovementY(robot, defpos, min, max);
         RobotUtils.moveEgo(robot, defpos);
 
         // If the ball is close, change to KICK

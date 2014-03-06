@@ -174,11 +174,10 @@ public final class GoalKeeperBehaviour extends MultiBehaviour {
         //Setup to use only part of the goal or something like that
     	//total 0 < x <= 2
     	double areaHeight = aTop-aBottom;
-    	double offset = areaHeight / 2;
     	double barHeight =  areaHeight / total;
     	
-    	min = aBottom + offset + barHeight * you;
-    	max = aBottom + offset + barHeight * (you + 1);
+    	min = aBottom + barHeight * you;
+    	max = aBottom + barHeight * (you + 1);
     }
 
 }
