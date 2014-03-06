@@ -29,6 +29,9 @@ public final class DefenseBehaviour extends MultiBehaviour {
     private RobotAPI robot;
 
     private State state;
+    
+    double min;
+    double max;
 
     @Override
     public void configure () {
@@ -95,6 +98,7 @@ public final class DefenseBehaviour extends MultiBehaviour {
         // defvec.sety(defvec.y * 2);
 
         Vec2 defpos = new Vec2(goal.x + defvec.x, goal.y + defvec.y);
+        RobotUtils.restrictMovementY(defpos, min, max);
         RobotUtils.moveEgo(robot, defpos);
 
         // If the ball is close, change to KICK
@@ -124,7 +128,8 @@ public final class DefenseBehaviour extends MultiBehaviour {
 
     @Override
     public void multi (int you, int total) {
-        // TODO Setup to select part of the field
+        min = (((RobotAPI.getUpperFieldBound() - RobotAPI.getLowerFieldBound()) / total) * you) + RobotAPI.getLowerFieldBound();
+        max = (((RobotAPI.getUpperFieldBound() - RobotAPI.getLowerFieldBound()) / total) * (you + 1)) + RobotAPI.getLowerFieldBound();
     }
 
 }
