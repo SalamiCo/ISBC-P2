@@ -37,8 +37,10 @@ public final class ChoppedCBR {
         int n = 10;
         for (Iterator<Entry> it = entries.iterator(); n > 0 && it.hasNext(); n--) {
             Entry entry = it.next();
-
             double val = valorate(entry);
+
+            System.out.println("sim: " + entry.originalCase.similarity(ccase) + " -- val: " + val);
+            
             if (selVal < val) {
                 selSol = entry.solution;
                 selVal = val;
@@ -46,9 +48,11 @@ public final class ChoppedCBR {
         }
 
         if (selSol == null) {
+            System.out.println(ccase + " $ RANDOM");
             return ChoppedSolution.createRandom();
         }
 
+        System.out.println(ccase + " % " + selVal);
         return selSol;
     }
 

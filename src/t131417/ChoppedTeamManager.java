@@ -1,7 +1,10 @@
 package t131417;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -112,5 +115,7 @@ public final class ChoppedTeamManager extends TeamManager {
 
         lastCase = currentCase;
         lastSolution = solution;
+        
+        System.out.println(lastCase + " => " + lastSolution);
     }
 }

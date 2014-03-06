@@ -52,16 +52,21 @@ public final class ChoppedCase {
         int manyDifference = (scoreDifference > many) ? 1 : 0;
 
         double weightQuantity = 0.3;
-        double similarQuantity = ((fewGoalsUs + manyGoalsUs + fewGoalsThem + manyGoalsThem)/4) * weightQuantity;
+        double similarQuantity = ((fewGoalsUs + manyGoalsUs + fewGoalsThem + manyGoalsThem) / 4) * weightQuantity;
 
         double weightDifference = 0.5;
-        double similarDifference = ((fewDifference + manyDifference)/2) * weightDifference;
-        
+        double similarDifference = ((fewDifference + manyDifference) / 2) * weightDifference;
+
         double weightTime = 0.2;
         int fewTime = 10;
-        int timeDifference = (Math.abs(matchTime - matchTime1) < fewTime)? 1 : 0;
-        double similarTime = timeDifference * weightTime;        
+        int timeDifference = (Math.abs(matchTime - matchTime1) < fewTime) ? 1 : 0;
+        double similarTime = timeDifference * weightTime;
 
         return similarQuantity + similarDifference + similarTime;
+    }
+
+    @Override
+    public String toString () {
+        return goalsUs + "|" + goalsThem + " (" + matchTime + ")";
     }
 }
