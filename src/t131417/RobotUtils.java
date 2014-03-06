@@ -143,4 +143,12 @@ public final class RobotUtils {
             RobotUtils.moveEgo(robot, goal, 1.0);
         }
     }
+    
+    public static void restrictMovementY(Vec2 goal, double min, double max){
+    	if (goal.y < min){
+    		goal.sety(min);
+    	} else if (goal.y > max){
+    		goal.sety(max);
+    	}
+    }
 }
