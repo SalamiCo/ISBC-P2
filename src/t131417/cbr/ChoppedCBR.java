@@ -162,7 +162,7 @@ public final class ChoppedCBR {
         // Magic algorithm for +/- votes valoration found here:
         // http://www.evanmiller.org/how-not-to-sort-by-average-rating.html
         // Used in Reddit for comments so it must be good!
-        double z = 1.9599639715843482; // pre-calculated for 0.95 confidence
+        double z = 1.644853646608357; // pre-calculated for 0.90 confidence
         double phat = 1.0 * pos / n;
         return (phat + z * z / (2 * n) - z * Math.sqrt((phat * (1 - phat) + z * z / (4 * n)) / n)) / (1 + z * z / n);
     }
