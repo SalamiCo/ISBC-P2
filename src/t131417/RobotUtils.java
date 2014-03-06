@@ -144,11 +144,17 @@ public final class RobotUtils {
         }
     }
     
-    public static void restrictMovementY(Vec2 goal, double min, double max){
-    	if (goal.y < min){
-    		goal.sety(min);
-    	} else if (goal.y > max){
-    		goal.sety(max);
+    public static void restrictMovementY(RobotAPI robot, Vec2 goal, double min, double max){
+    	//to field coordinates
+    	Vec2 pos = robot.toFieldCoordinates(goal);
+    	
+    	if (pos.y < min){
+    		pos.sety(min);
+    	} else if (pos.y > max){
+    		pos.sety(max);
     	}
+    	
+    	//to egocentrical coordinates
+    	goal = robot.toEgocentricalCoordinates(pos);
     }
 }

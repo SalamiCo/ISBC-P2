@@ -103,7 +103,7 @@ public final class GoalKeeperBehaviour extends MultiBehaviour {
 
         if (goal.r >= robot.getPlayerRadius() * 5) {
         	//restrict y-axis movement
-        	RobotUtils.restrictMovementY(goal, min, max);
+        	RobotUtils.restrictMovementY(robot, goal, min, max);
             RobotUtils.moveEgo(robot, goal);
 
         } else {
@@ -125,7 +125,7 @@ public final class GoalKeeperBehaviour extends MultiBehaviour {
         defvec.sety(defvec.y * 2.5);
 
         Vec2 defpos = new Vec2(goal.x + defvec.x, goal.y + defvec.y);
-        RobotUtils.restrictMovementY(defpos, min, max);
+        RobotUtils.restrictMovementY(robot, defpos, min, max);
         RobotUtils.moveEgo(robot, defpos, -1);
 
         // If the ball is close, change to KICK
@@ -159,7 +159,7 @@ public final class GoalKeeperBehaviour extends MultiBehaviour {
 
         Vec2 target = new Vec2(blocker);
         target.setr(-100);
-        RobotUtils.restrictMovementY(target, min, max);
+        RobotUtils.restrictMovementY(robot, target, min, max);
         RobotUtils.moveEgo(robot, target);
 
         if (!robot.blocked() && blocker.r > robot.getPlayerRadius() * 2.2) {
@@ -169,14 +169,16 @@ public final class GoalKeeperBehaviour extends MultiBehaviour {
 
     @Override
     public void multi (int you, int total) {
-        // TODO Setup to use only part of the goal or something like that
+    	final double aTop = 0.5;
+    	final double aBottom = -0.5;
+        //Setup to use only part of the goal or something like that
     	//total 0 < x <= 2
-    	double areaHeight = RobotAPI.getLowerFieldBound();
+    	double areaHeight = aTop-aBottom;
     	double offset = areaHeight / 2;
     	double barHeight =  areaHeight / total;
     	
-    	min = RobotAPI.getUpperFieldBound() + offset + barHeight * you;
-    	max = RobotAPI.getUpperFieldBound() + offset + barHeight * (you + 1);
+    	min = aBottom + offset + barHeight * you;
+    	max = aBottom + offset + barHeight * (you + 1);
     }
 
 }
