@@ -1,7 +1,7 @@
-package t131417.cbr;
+package t1314grupo17.cbr;
 
 /**
- * Description of the cases for the {@link t131417.ChoppedTeam}.
+ * Description of the cases for the {@link t1314grupo17.ChoppedTeam}.
  * 
  * @author Daniel Escoz Solana
  * @author Pedro Morgado Alarcón

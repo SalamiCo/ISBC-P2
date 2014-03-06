@@ -1,4 +1,4 @@
-package t131417.cbr;
+package t1314grupo17.cbr;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,13 +6,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import t131417.MultiBehaviour;
-import t131417.behaviours.BackupBehaviour;
-import t131417.behaviours.BlockerBehaviour;
-import t131417.behaviours.DefenseBehaviour;
-import t131417.behaviours.DriverBehaviour;
-import t131417.behaviours.GoalKeeperBehaviour;
-import t131417.behaviours.ZombieBehaviour;
+import t1314grupo17.MultiBehaviour;
+import t1314grupo17.behaviours.BackupBehaviour;
+import t1314grupo17.behaviours.BlockerBehaviour;
+import t1314grupo17.behaviours.DefenseBehaviour;
+import t1314grupo17.behaviours.DriverBehaviour;
+import t1314grupo17.behaviours.GoalKeeperBehaviour;
+import t1314grupo17.behaviours.ZombieBehaviour;
 
 public final class ChoppedSolution {
 

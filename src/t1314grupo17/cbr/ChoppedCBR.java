@@ -1,4 +1,4 @@
-package t131417.cbr;
+package t1314grupo17.cbr;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,7 +13,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import t131417.MultiBehaviour;
+import t1314grupo17.MultiBehaviour;
 
 /**
  * CBR application to use in the team manager.
