@@ -5,9 +5,9 @@ import teams.ucmTeam.UCMPlayer;
 
 public final class SalamiTeam extends UCMPlayer {
 
-	@Override
-	protected TeamManager createTeamManager() {
-		return new SalamiTeamManager();
-	}
+    @Override
+    protected TeamManager createTeamManager () {
+        return new SalamiTeamManager();
+    }
 
 }

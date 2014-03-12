@@ -2,7 +2,6 @@ package t1314grupo17.behaviours;
 
 import t1314grupo17.MultiBehaviour;
 import t1314grupo17.RobotUtils;
-import teams.rolebased.WorldAPI;
 import teams.ucmTeam.RobotAPI;
 import EDU.gatech.cc.is.util.Vec2;
 
@@ -41,13 +40,13 @@ public final class DriverBehaviour extends MultiBehaviour {
     }
 
     @Override
-    public void onInit (RobotAPI robot) {
+    public void onInit (final RobotAPI robot) {
         this.robot = robot;
         state = State.WAIT;
     }
 
     @Override
-    public void onRelease (RobotAPI robot) {
+    public void onRelease (final RobotAPI robot) {
         this.robot = null;
     }
 
@@ -71,11 +70,11 @@ public final class DriverBehaviour extends MultiBehaviour {
         }
 
         robot.setDisplayString("DRIVER | " + state);
-        return WorldAPI.ROBOT_OK;
+        return RobotAPI.ROBOT_OK;
     }
 
     private void stepWait () {
-        Vec2 ball = robot.getBall();
+        final Vec2 ball = robot.getBall();
 
         Vec2 pos = new Vec2(robot.getFieldSide() * robot.getPlayerRadius() * 3, 0);
         pos = robot.toEgocentricalCoordinates(pos);
@@ -96,8 +95,8 @@ public final class DriverBehaviour extends MultiBehaviour {
 
     private void stepGet () {
         // Go get the ball
-        Vec2 ball = robot.getBall();
-        Vec2 goal = robot.getOpponentsGoal();
+        final Vec2 ball = robot.getBall();
+        final Vec2 goal = robot.getOpponentsGoal();
 
         ball.sub(goal);
         ball.setr(ball.r + robot.getPlayerRadius());
@@ -138,7 +137,7 @@ public final class DriverBehaviour extends MultiBehaviour {
     }
 
     @Override
-    public void multi (int you, int total) {
+    public void multi (final int you, final int total) {
         // TODO Setup drivers to work only if part of the field
     }
 

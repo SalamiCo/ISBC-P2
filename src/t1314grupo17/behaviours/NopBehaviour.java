@@ -1,7 +1,6 @@
 package t1314grupo17.behaviours;
 
 import t1314grupo17.MultiBehaviour;
-import teams.rolebased.WorldAPI;
 import teams.ucmTeam.RobotAPI;
 
 public final class NopBehaviour extends MultiBehaviour {
@@ -19,13 +18,13 @@ public final class NopBehaviour extends MultiBehaviour {
     }
 
     @Override
-    public void onInit (RobotAPI robot) {
+    public void onInit (final RobotAPI robot) {
         this.robot = robot;
         robot.setDisplayString("nop");
     }
 
     @Override
-    public void onRelease (RobotAPI robot) {
+    public void onRelease (final RobotAPI robot) {
         this.robot = null;
     }
 
@@ -33,11 +32,11 @@ public final class NopBehaviour extends MultiBehaviour {
     public int takeStep () {
         robot.setSpeed(0.0);
 
-        return WorldAPI.ROBOT_OK;
+        return RobotAPI.ROBOT_OK;
     }
 
     @Override
-    public void multi (int you, int total) {
+    public void multi (final int you, final int total) {
         // NOP's don't care, NOP's don't feel they just sit there judging you
     }
 

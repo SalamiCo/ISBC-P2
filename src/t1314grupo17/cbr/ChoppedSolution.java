@@ -19,7 +19,7 @@ public final class ChoppedSolution {
     /** List of behaviours */
     private final List<Class<? extends MultiBehaviour>> behaviours;
 
-    public ChoppedSolution (List<Class<? extends MultiBehaviour>> behaviours) {
+    public ChoppedSolution (final List<Class<? extends MultiBehaviour>> behaviours) {
         if (behaviours.size() != 5) {
             throw new IllegalArgumentException("behaviours.size() != 5");
         }
@@ -32,21 +32,21 @@ public final class ChoppedSolution {
     }
 
     public static ChoppedSolution createRandom () {
-        Random rand = new Random();
-        List<Class<? extends MultiBehaviour>> bs = new ArrayList<Class<? extends MultiBehaviour>>();
+        final Random rand = new Random();
+        final List<Class<? extends MultiBehaviour>> bs = new ArrayList<Class<? extends MultiBehaviour>>();
 
         @SuppressWarnings("unchecked")
-        Class<? extends MultiBehaviour>[] rands = (Class<? extends MultiBehaviour>[]) new Class[] {//
+        final Class<? extends MultiBehaviour>[] rands = new Class[] {//
             ZombieBehaviour.class, GoalKeeperBehaviour.class, BackupBehaviour.class, BlockerBehaviour.class,
                 DefenseBehaviour.class, DriverBehaviour.class };
-        int[] lefts = { 3, 2, 1, 2, 2, 2 };
+        final int[] lefts = { 3, 2, 1, 2, 2, 2 };
         int num = rands.length;
 
         for (int i = 0; i < 5; i++) {
-            int n = rand.nextInt(num);
+            final int n = rand.nextInt(num);
 
             bs.add(rands[n]);
-            int left = --lefts[n];
+            final int left = --lefts[n];
 
             if (left == 0) {
                 num--;
@@ -60,12 +60,12 @@ public final class ChoppedSolution {
     }
 
     @Override
-    public boolean equals (Object obj) {
+    public boolean equals (final Object obj) {
         if (!(obj instanceof ChoppedSolution)) {
             return false;
         }
 
-        ChoppedSolution cs = (ChoppedSolution) obj;
+        final ChoppedSolution cs = (ChoppedSolution) obj;
         return cs.behaviours.equals(behaviours);
     }
 

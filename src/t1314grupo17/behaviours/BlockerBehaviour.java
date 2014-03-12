@@ -2,7 +2,6 @@ package t1314grupo17.behaviours;
 
 import t1314grupo17.MultiBehaviour;
 import t1314grupo17.RobotUtils;
-import teams.rolebased.WorldAPI;
 import teams.ucmTeam.RobotAPI;
 import EDU.gatech.cc.is.util.Vec2;
 
@@ -27,8 +26,6 @@ public class BlockerBehaviour extends MultiBehaviour {
     private RobotAPI robot;
 
     private State state;
-    
-    private int num;
 
     @Override
     public void configure () {
@@ -41,13 +38,13 @@ public class BlockerBehaviour extends MultiBehaviour {
     }
 
     @Override
-    public void onInit (RobotAPI robot) {
+    public void onInit (final RobotAPI robot) {
         this.robot = robot;
         state = State.GOTO;
     }
 
     @Override
-    public void onRelease (RobotAPI robot) {
+    public void onRelease (final RobotAPI robot) {
         this.robot = null;
     }
 
@@ -68,11 +65,11 @@ public class BlockerBehaviour extends MultiBehaviour {
         }
 
         robot.setDisplayString("BLOCKER | " + state);
-        return WorldAPI.ROBOT_OK;
+        return RobotAPI.ROBOT_OK;
     }
 
     private void stepGoto () {
-        Vec2 goal = robot.getOpponentsGoal();
+        final Vec2 goal = robot.getOpponentsGoal();
 
         if (goal.r >= robot.getPlayerRadius() * 10) {
             RobotUtils.moveEgo(robot, goal);
@@ -83,9 +80,9 @@ public class BlockerBehaviour extends MultiBehaviour {
     }
 
     private void stepBlock () {
-        Vec2 goal = robot.getOpponentsGoal();
+        final Vec2 goal = robot.getOpponentsGoal();
 
-        Vec2 gk = RobotUtils.getOpponentsGoalKeeper(robot);
+        final Vec2 gk = RobotUtils.getOpponentsGoalKeeper(robot);
         RobotUtils.moveEgo(robot, gk);
 
         // Always close to the opponent's area
@@ -96,8 +93,7 @@ public class BlockerBehaviour extends MultiBehaviour {
     }
 
     @Override
-    public void multi (int you, int total) {
-        this.num = you;
+    public void multi (final int you, final int total) {
     }
 
 }

@@ -2,7 +2,6 @@ package t1314grupo17.behaviours;
 
 import t1314grupo17.MultiBehaviour;
 import t1314grupo17.RobotUtils;
-import teams.rolebased.WorldAPI;
 import teams.ucmTeam.RobotAPI;
 import EDU.gatech.cc.is.util.Vec2;
 
@@ -39,9 +38,9 @@ public final class GoalKeeperBehaviour extends MultiBehaviour {
     private RobotAPI robot;
 
     private State state;
-    
+
     private double min;
-    
+
     private double max;
 
     @Override
@@ -55,13 +54,13 @@ public final class GoalKeeperBehaviour extends MultiBehaviour {
     }
 
     @Override
-    public void onInit (RobotAPI robot) {
+    public void onInit (final RobotAPI robot) {
         this.robot = robot;
         state = State.GOTO;
     }
 
     @Override
-    public void onRelease (RobotAPI robot) {
+    public void onRelease (final RobotAPI robot) {
         this.robot = null;
     }
 
@@ -94,16 +93,16 @@ public final class GoalKeeperBehaviour extends MultiBehaviour {
         }
 
         robot.setDisplayString("GKEEP | " + state);
-        return WorldAPI.ROBOT_OK;
+        return RobotAPI.ROBOT_OK;
     }
 
     private void stepGoto () {
-        Vec2 goal = robot.getOurGoal();
+        final Vec2 goal = robot.getOurGoal();
         goal.setx(goal.x - robot.getFieldSide() * robot.getPlayerRadius());
 
         if (goal.r >= robot.getPlayerRadius() * 5) {
-        	//restrict y-axis movement
-        	RobotUtils.restrictMovementY(robot, goal, min, max);
+            // restrict y-axis movement
+            RobotUtils.restrictMovementY(robot, goal, min, max);
             RobotUtils.moveEgo(robot, goal);
 
         } else {
@@ -114,50 +113,50 @@ public final class GoalKeeperBehaviour extends MultiBehaviour {
     }
 
     private void stepDefend () {
-        Vec2 ball = robot.getBall();
+        final Vec2 ball = robot.getBall();
 
         // Move to a defending position
-        Vec2 goal = robot.getOurGoal();
+        final Vec2 goal = robot.getOurGoal();
         goal.setx(goal.x - robot.getFieldSide() * robot.getPlayerRadius());
 
-        Vec2 defvec = new Vec2(ball.x - goal.x, ball.y - goal.y);
+        final Vec2 defvec = new Vec2(ball.x - goal.x, ball.y - goal.y);
         defvec.setr(robot.getPlayerRadius() * 2);
         defvec.sety(defvec.y * 2.5);
 
-        Vec2 defpos = new Vec2(goal.x + defvec.x, goal.y + defvec.y);
+        final Vec2 defpos = new Vec2(goal.x + defvec.x, goal.y + defvec.y);
         RobotUtils.restrictMovementY(robot, defpos, min, max);
         RobotUtils.moveEgo(robot, defpos, -1);
 
         // If the ball is close, change to KICK
-        Vec2 bg = new Vec2(ball.x - goal.x, ball.y - goal.y);
+        final Vec2 bg = new Vec2(ball.x - goal.x, ball.y - goal.y);
         if (bg.r < robot.getPlayerRadius() * 6) {
             state = State.KICK;
         }
     }
 
     private void stepKick () {
-        Vec2 ball = robot.getBall();
+        final Vec2 ball = robot.getBall();
 
         // Move to kick the ball
         RobotUtils.moveToKickBallAway(robot);
 
         // If the ball is far, change to GOTO
-        Vec2 goal = robot.getOurGoal();
+        final Vec2 goal = robot.getOurGoal();
         goal.setx(goal.x - robot.getFieldSide() * robot.getPlayerRadius());
 
-        Vec2 bg = new Vec2(ball.x - goal.x, ball.y - goal.y);
+        final Vec2 bg = new Vec2(ball.x - goal.x, ball.y - goal.y);
         if (bg.r > robot.getPlayerRadius() * 7) {
             state = State.GOTO;
         }
     }
 
     private void stepUnblock () {
-        Vec2 cm = robot.getClosestMate();
-        Vec2 co = robot.getClosestOpponent();
+        final Vec2 cm = robot.getClosestMate();
+        final Vec2 co = robot.getClosestOpponent();
 
-        Vec2 blocker = (cm.r < co.r) ? cm : co;
+        final Vec2 blocker = (cm.r < co.r) ? cm : co;
 
-        Vec2 target = new Vec2(blocker);
+        final Vec2 target = new Vec2(blocker);
         target.setr(-100);
         RobotUtils.restrictMovementY(robot, target, min, max);
         RobotUtils.moveEgo(robot, target);
@@ -168,16 +167,16 @@ public final class GoalKeeperBehaviour extends MultiBehaviour {
     }
 
     @Override
-    public void multi (int you, int total) {
-    	final double aTop = 0.5;
-    	final double aBottom = -0.5;
-        //Setup to use only part of the goal or something like that
-    	//total 0 < x <= 2
-    	double areaHeight = aTop-aBottom;
-    	double barHeight =  areaHeight / total;
-    	
-    	min = aBottom + barHeight * you;
-    	max = aBottom + barHeight * (you + 1);
+    public void multi (final int you, final int total) {
+        final double aTop = 0.5;
+        final double aBottom = -0.5;
+        // Setup to use only part of the goal or something like that
+        // total 0 < x <= 2
+        final double areaHeight = aTop - aBottom;
+        final double barHeight = areaHeight / total;
+
+        min = aBottom + barHeight * you;
+        max = aBottom + barHeight * (you + 1);
     }
 
 }

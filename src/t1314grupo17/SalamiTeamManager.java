@@ -6,13 +6,13 @@ import t1314grupo17.behaviours.DefenseBehaviour;
 import t1314grupo17.behaviours.DriverBehaviour;
 import t1314grupo17.behaviours.GoalKeeperBehaviour;
 import t1314grupo17.behaviours.NopBehaviour;
-import teams.rolebased.WorldAPI;
 import teams.ucmTeam.Behaviour;
+import teams.ucmTeam.RobotAPI;
 import teams.ucmTeam.TeamManager;
 
 public final class SalamiTeamManager extends TeamManager {
 
-    private Behaviour[] behaviours = { //
+    private final Behaviour[] behaviours = { //
         new NopBehaviour(), new GoalKeeperBehaviour(), new DefenseBehaviour(), new BackupBehaviour(),
             new DriverBehaviour(), new BlockerBehaviour() };
 
@@ -25,7 +25,7 @@ public final class SalamiTeamManager extends TeamManager {
     }
 
     @Override
-    public Behaviour getDefaultBehaviour (int id) {
+    public Behaviour getDefaultBehaviour (final int id) {
         switch (id) {
             case 0:
                 return behaviours[1];
@@ -49,12 +49,12 @@ public final class SalamiTeamManager extends TeamManager {
 
     @Override
     public int onConfigure () {
-        return WorldAPI.ROBOT_OK;
+        return RobotAPI.ROBOT_OK;
     }
 
     @Override
     protected void onTakeStep () {
-        long now = System.currentTimeMillis();
+        final long now = System.currentTimeMillis();
 
         int blockedId = -1;
         int backupId = -1;
@@ -74,12 +74,12 @@ public final class SalamiTeamManager extends TeamManager {
                 blockedId = i;
             }
         }
-        
+
         if (blockedId > 0 && backupId > 0) {
             try {
                 _players[backupId].setBehaviour(_players[blockedId].getBehaviour().getClass().newInstance());
                 _players[blockedId].setBehaviour(new BackupBehaviour());
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 // Gotta catch 'em all!
             }
         }

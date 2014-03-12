@@ -2,7 +2,6 @@ package t1314grupo17.behaviours;
 
 import t1314grupo17.MultiBehaviour;
 import t1314grupo17.RobotUtils;
-import teams.rolebased.WorldAPI;
 import teams.ucmTeam.RobotAPI;
 import EDU.gatech.cc.is.util.Vec2;
 
@@ -29,7 +28,7 @@ public final class DefenseBehaviour extends MultiBehaviour {
     private RobotAPI robot;
 
     private State state;
-    
+
     double min;
     double max;
 
@@ -44,13 +43,13 @@ public final class DefenseBehaviour extends MultiBehaviour {
     }
 
     @Override
-    public void onInit (RobotAPI robot) {
+    public void onInit (final RobotAPI robot) {
         this.robot = robot;
         state = State.GOTO;
     }
 
     @Override
-    public void onRelease (RobotAPI robot) {
+    public void onRelease (final RobotAPI robot) {
         this.robot = null;
     }
 
@@ -69,11 +68,11 @@ public final class DefenseBehaviour extends MultiBehaviour {
         }
 
         robot.setDisplayString("DEFENSE | " + state);
-        return WorldAPI.ROBOT_OK;
+        return RobotAPI.ROBOT_OK;
     }
 
     private void stepGoto () {
-        Vec2 goal = robot.getOurGoal();
+        final Vec2 goal = robot.getOurGoal();
         goal.setx(goal.x - robot.getFieldSide() * robot.getPlayerRadius());
 
         if (goal.r >= robot.getPlayerRadius() * 24) {
@@ -87,17 +86,17 @@ public final class DefenseBehaviour extends MultiBehaviour {
     }
 
     private void stepDefend () {
-        Vec2 ball = robot.getBall();
+        final Vec2 ball = robot.getBall();
 
         // Move to a defending position
-        Vec2 goal = robot.getOurGoal();
+        final Vec2 goal = robot.getOurGoal();
         goal.setx(goal.x - robot.getFieldSide() * robot.getPlayerRadius());
 
-        Vec2 defvec = new Vec2(ball.x - goal.x, ball.y - goal.y);
+        final Vec2 defvec = new Vec2(ball.x - goal.x, ball.y - goal.y);
         defvec.setr(robot.getPlayerRadius() * 10);
         // defvec.sety(defvec.y * 2);
 
-        Vec2 defpos = new Vec2(goal.x + defvec.x, goal.y + defvec.y);
+        final Vec2 defpos = new Vec2(goal.x + defvec.x, goal.y + defvec.y);
         RobotUtils.restrictMovementY(robot, defpos, min, max);
         RobotUtils.moveEgo(robot, defpos);
 
@@ -110,7 +109,7 @@ public final class DefenseBehaviour extends MultiBehaviour {
     private void stepKick () {
         // Move to kick the ball
         RobotUtils.driveBall(robot, robot.getOpponentsGoal());
-        
+
         if (robot.alignedToBallandGoal()) {
             robot.kick();
             state = State.DEFEND;
@@ -127,16 +126,16 @@ public final class DefenseBehaviour extends MultiBehaviour {
     }
 
     @Override
-    public void multi (int you, int total) {
-    	final double aTop = RobotAPI.getUpperFieldBound();
-    	final double aBottom = RobotAPI.getLowerFieldBound();
-        //Setup to use only part of the goal or something like that
-    	//total 0 < x <= 2
-    	double areaHeight = aTop-aBottom;
-    	double barHeight =  areaHeight / total;
-    	
-    	min = aBottom + barHeight * you;
-    	max = aBottom + barHeight * (you + 1);
+    public void multi (final int you, final int total) {
+        final double aTop = RobotAPI.getUpperFieldBound();
+        final double aBottom = RobotAPI.getLowerFieldBound();
+        // Setup to use only part of the goal or something like that
+        // total 0 < x <= 2
+        final double areaHeight = aTop - aBottom;
+        final double barHeight = areaHeight / total;
+
+        min = aBottom + barHeight * you;
+        max = aBottom + barHeight * (you + 1);
     }
 
 }

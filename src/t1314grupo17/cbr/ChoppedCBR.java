@@ -26,21 +26,21 @@ public final class ChoppedCBR {
 
     private static final Charset UTF8 = Charset.forName("UTF-8");
 
-    private List<Entry> entries = new ArrayList<Entry>();
+    private final List<Entry> entries = new ArrayList<Entry>();
 
-    public ChoppedSolution findSolution (ChoppedCase ccase) {
+    public ChoppedSolution findSolution (final ChoppedCase ccase) {
         Collections.sort(entries, new ChoppedSimilarityComparator(ccase));
 
         ChoppedSolution selSol = null;
         double selVal = Double.MIN_VALUE;
 
         int n = 10;
-        for (Iterator<Entry> it = entries.iterator(); n > 0 && it.hasNext(); n--) {
-            Entry entry = it.next();
-            double val = valorate(entry);
+        for (final Iterator<Entry> it = entries.iterator(); n > 0 && it.hasNext(); n--) {
+            final Entry entry = it.next();
+            final double val = valorate(entry);
 
             System.out.println("sim: " + entry.originalCase.similarity(ccase) + " -- val: " + val);
-            
+
             if (selVal < val) {
                 selSol = entry.solution;
                 selVal = val;
@@ -60,28 +60,28 @@ public final class ChoppedCBR {
         entries.clear();
     }
 
-    public void load (File file) throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file), UTF8));
+    public void load (final File file) throws IOException {
+        final BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file), UTF8));
         try {
             String line;
             while ((line = in.readLine()) != null) {
-                String[] pieces = line.split("\\s+");
+                final String[] pieces = line.split("\\s+");
 
-                int gu = Integer.parseInt(pieces[0]);
-                int gt = Integer.parseInt(pieces[1]);
-                int t = Integer.parseInt(pieces[2]);
-                ChoppedCase ocase = new ChoppedCase(gu, gt, t);
+                final int gu = Integer.parseInt(pieces[0]);
+                final int gt = Integer.parseInt(pieces[1]);
+                final int t = Integer.parseInt(pieces[2]);
+                final ChoppedCase ocase = new ChoppedCase(gu, gt, t);
 
-                List<Class<? extends MultiBehaviour>> classes = new ArrayList<Class<? extends MultiBehaviour>>();
+                final List<Class<? extends MultiBehaviour>> classes = new ArrayList<Class<? extends MultiBehaviour>>();
                 classes.add((Class<? extends MultiBehaviour>) Class.forName(pieces[3]));
                 classes.add((Class<? extends MultiBehaviour>) Class.forName(pieces[4]));
                 classes.add((Class<? extends MultiBehaviour>) Class.forName(pieces[5]));
                 classes.add((Class<? extends MultiBehaviour>) Class.forName(pieces[6]));
                 classes.add((Class<? extends MultiBehaviour>) Class.forName(pieces[7]));
-                ChoppedSolution sol = new ChoppedSolution(classes);
+                final ChoppedSolution sol = new ChoppedSolution(classes);
 
                 // Create the entry
-                Entry entry = new Entry();
+                final Entry entry = new Entry();
                 entry.originalCase = ocase;
                 entry.solution = sol;
                 entry.positive = Integer.parseInt(pieces[8]);
@@ -90,7 +90,7 @@ public final class ChoppedCBR {
                 // Add the entry
                 entries.add(entry);
             }
-        } catch (ClassNotFoundException exc) {
+        } catch (final ClassNotFoundException exc) {
             exc.printStackTrace();
 
         } finally {
@@ -98,11 +98,11 @@ public final class ChoppedCBR {
         }
     }
 
-    public void add (ChoppedCase ccase, ChoppedSolution solution, boolean positive) {
+    public void add (final ChoppedCase ccase, final ChoppedSolution solution, final boolean positive) {
         Entry e = null;
 
         // Loop over the entries
-        for (Entry entry : entries) {
+        for (final Entry entry : entries) {
             if (entry.originalCase.similarity(ccase) > 0.9 && entry.solution.equals(solution)) {
                 e = entry;
                 break;
@@ -127,17 +127,17 @@ public final class ChoppedCBR {
         }
     }
 
-    public void save (File file) throws IOException {
-        PrintWriter pw = new PrintWriter(file);
+    public void save (final File file) throws IOException {
+        final PrintWriter pw = new PrintWriter(file);
         try {
-            for (Entry entry : entries) {
+            for (final Entry entry : entries) {
                 pw.print(entry.originalCase.getGoalsUs());
                 pw.print("\t");
                 pw.print(entry.originalCase.getGoalsThem());
                 pw.print("\t");
                 pw.print(entry.originalCase.getMatchTime());
                 pw.print("\t");
-                for (Class<? extends MultiBehaviour> cls : entry.solution.getBehaviours()) {
+                for (final Class<? extends MultiBehaviour> cls : entry.solution.getBehaviours()) {
                     pw.print(cls.getName());
                     pw.print("\t");
                 }
@@ -151,19 +151,19 @@ public final class ChoppedCBR {
         }
     }
 
-    private double valorate (Entry entry) {
+    private double valorate (final Entry entry) {
         if (entry.positive + entry.negative == 0) {
             return 0.0;
         }
 
-        double pos = entry.positive;
-        double n = entry.positive + entry.negative;
+        final double pos = entry.positive;
+        final double n = entry.positive + entry.negative;
 
         // Magic algorithm for +/- votes valoration found here:
         // http://www.evanmiller.org/how-not-to-sort-by-average-rating.html
         // Used in Reddit for comments so it must be good!
-        double z = 1.644853646608357; // pre-calculated for 0.90 confidence
-        double phat = 1.0 * pos / n;
+        final double z = 1.644853646608357; // pre-calculated for 0.90 confidence
+        final double phat = 1.0 * pos / n;
         return (phat + z * z / (2 * n) - z * Math.sqrt((phat * (1 - phat) + z * z / (4 * n)) / n)) / (1 + z * z / n);
     }
 
@@ -188,14 +188,14 @@ public final class ChoppedCBR {
 
         private final ChoppedCase ccase;
 
-        /* package */public ChoppedSimilarityComparator (ChoppedCase ccase) {
+        /* package */public ChoppedSimilarityComparator (final ChoppedCase ccase) {
             this.ccase = ccase;
         }
 
         @Override
-        public int compare (Entry cc1, Entry cc2) {
-            double d1 = ccase.similarity(cc1.originalCase);
-            double d2 = ccase.similarity(cc2.originalCase);
+        public int compare (final Entry cc1, final Entry cc2) {
+            final double d1 = ccase.similarity(cc1.originalCase);
+            final double d2 = ccase.similarity(cc2.originalCase);
 
             return d1 > d2 ? -1 : //
                 d1 < d2 ? +1 : 0;

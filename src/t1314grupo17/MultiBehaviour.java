@@ -17,7 +17,7 @@ public abstract class MultiBehaviour extends Behaviour {
      * @param you Number of this behaviour
      * @param total Total number of behaviours
      */
-    protected MultiBehaviour (int you, int total) {
+    protected MultiBehaviour (final int you, final int total) {
         multi(you, total);
     }
 

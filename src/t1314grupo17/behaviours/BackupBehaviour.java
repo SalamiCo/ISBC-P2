@@ -2,7 +2,6 @@ package t1314grupo17.behaviours;
 
 import t1314grupo17.MultiBehaviour;
 import t1314grupo17.RobotUtils;
-import teams.rolebased.WorldAPI;
 import teams.ucmTeam.RobotAPI;
 import EDU.gatech.cc.is.util.Vec2;
 
@@ -27,13 +26,13 @@ public class BackupBehaviour extends MultiBehaviour {
     }
 
     @Override
-    public void onInit (RobotAPI robot) {
+    public void onInit (final RobotAPI robot) {
         this.robot = robot;
         state = State.BACKUP;
     }
 
     @Override
-    public void onRelease (RobotAPI robot) {
+    public void onRelease (final RobotAPI robot) {
         this.robot = null;
     }
 
@@ -49,10 +48,10 @@ public class BackupBehaviour extends MultiBehaviour {
                 break;
 
             case UNBLOCK: {
-                Vec2 cm = robot.getClosestMate();
-                Vec2 co = robot.getClosestOpponent();
+                final Vec2 cm = robot.getClosestMate();
+                final Vec2 co = robot.getClosestOpponent();
 
-                Vec2 closest = co.r < cm.r ? co : cm;
+                final Vec2 closest = co.r < cm.r ? co : cm;
                 closest.setr(-robot.getPlayerRadius() * 10);
 
                 RobotUtils.moveEgo(robot, closest, 1.0);
@@ -68,7 +67,7 @@ public class BackupBehaviour extends MultiBehaviour {
         }
 
         robot.setDisplayString("BACKUP");
-        return WorldAPI.ROBOT_OK;
+        return RobotAPI.ROBOT_OK;
     }
 
     private Vec2 selectWhere () {
@@ -91,7 +90,7 @@ public class BackupBehaviour extends MultiBehaviour {
     }
 
     @Override
-    public void multi (int you, int total) {
+    public void multi (final int you, final int total) {
         // We don't care -- multiple backups don't matter
     }
 }

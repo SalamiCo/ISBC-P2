@@ -2,13 +2,11 @@ package t1314grupo17.behaviours;
 
 import t1314grupo17.MultiBehaviour;
 import t1314grupo17.RobotUtils;
-import teams.rolebased.WorldAPI;
-import teams.ucmTeam.Behaviour;
 import teams.ucmTeam.RobotAPI;
 import EDU.gatech.cc.is.util.Vec2;
 
 public class ZombieBehaviour extends MultiBehaviour {
-	private enum State {
+    private enum State {
         ZOMBIE, UNBLOCK;
     }
 
@@ -27,13 +25,13 @@ public class ZombieBehaviour extends MultiBehaviour {
     }
 
     @Override
-    public void onInit (RobotAPI robot) {
+    public void onInit (final RobotAPI robot) {
         this.robot = robot;
         state = State.ZOMBIE;
     }
 
     @Override
-    public void onRelease (RobotAPI robot) {
+    public void onRelease (final RobotAPI robot) {
         this.robot = null;
     }
 
@@ -49,10 +47,10 @@ public class ZombieBehaviour extends MultiBehaviour {
                 break;
 
             case UNBLOCK: {
-                Vec2 cm = robot.getClosestMate();
-                Vec2 co = robot.getClosestOpponent();
+                final Vec2 cm = robot.getClosestMate();
+                final Vec2 co = robot.getClosestOpponent();
 
-                Vec2 closest = co.r < cm.r ? co : cm;
+                final Vec2 closest = co.r < cm.r ? co : cm;
                 closest.setr(-robot.getPlayerRadius() * 10);
 
                 RobotUtils.moveEgo(robot, closest, 1.0);
@@ -65,21 +63,25 @@ public class ZombieBehaviour extends MultiBehaviour {
             && robot.getClosestOpponent().r > robot.getPlayerRadius() * 1.2)
         {
             state = State.ZOMBIE;
-       }
+        }
 
         robot.setDisplayString("ZOMBIE");
-        return WorldAPI.ROBOT_OK;
+        return RobotAPI.ROBOT_OK;
     }
 
     private Vec2 selectWhere () {
-        double x = RobotAPI.getLeftFieldBound() + (Math.random() * (RobotAPI.getRightFieldBound() - RobotAPI.getLeftFieldBound()));
-        double y = RobotAPI.getLowerFieldBound() + (Math.random() * (RobotAPI.getUpperFieldBound() - RobotAPI.getLowerFieldBound()));
-        
+        final double x =
+            RobotAPI.getLeftFieldBound()
+                + (Math.random() * (RobotAPI.getRightFieldBound() - RobotAPI.getLeftFieldBound()));
+        final double y =
+            RobotAPI.getLowerFieldBound()
+                + (Math.random() * (RobotAPI.getUpperFieldBound() - RobotAPI.getLowerFieldBound()));
+
         return new Vec2(x, y);
     }
 
     @Override
-    public void multi (int you, int total) {
+    public void multi (final int you, final int total) {
         // Zombies don't care
     }
 }
